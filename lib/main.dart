@@ -1,4 +1,6 @@
 
+import 'package:abldriver/presentaion/notification/provider/notificationProvider.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:abldriver/presentaion/accountDetailsScreen/provider/accountProvider.dart';
@@ -15,6 +17,8 @@ import 'package:abldriver/presentaion/walletScreen/provider/walletProvider.dart'
 import 'package:abldriver/internetService/InterNetWapper.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'core/firbase/firbase_service.dart';
+import 'firebase_options.dart';
 import 'internetService/internetService.dart';
 import 'presentaion/splash/splashScreen.dart';
 
@@ -22,7 +26,17 @@ import 'presentaion/splash/splashScreen.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-void main() {
+void main() async {
+
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  /// Initialize Firebase Service
+  await FirebaseService.init();
+
   runApp(const MyApp());
 }
 
@@ -45,6 +59,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => CmsProvider()),
         ChangeNotifierProvider(create: (_) => WalletProvider()),
         ChangeNotifierProvider(create: (_) => AccountProvider()),
+        ChangeNotifierProvider(create: (_) => NotificationProvider()),
       ],
       child: MaterialApp(
         navigatorKey: navigatorKey,

@@ -5,7 +5,8 @@ class AppUrl {
 
 
  //live
- static const String baseUrl = 'http://159.89.146.245:7273';
+ //static const String baseUrl = 'http://159.89.146.245:7273';
+ static const String baseUrl = 'https://ablagro.in';
 
 
   static const String sendOtp = '$baseUrl/api/driver/login';
@@ -22,6 +23,8 @@ class AppUrl {
   static const String postWallet = '$baseUrl/api/driver/wallet/request';
   static const String Wallet = '$baseUrl/api/driver/wallet';
   static const String profileUpdate = '$baseUrl/api/driver/profile';
+ static const String notification = '$baseUrl/api/driver/notifications';
+ static const String notificationRead = '$baseUrl/api/driver/notifications/read';
 
 
 }

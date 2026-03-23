@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "882846969497",
+    "project_id": "ablagro-baa58",
+    "storage_bucket": "ablagro-baa58.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:882846969497:android:2f910f88bb47ab66149208",
+        "android_client_info": {
+          "package_name": "com.driver.ablagro"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDlKDXETBmAS6W_0qV658gJmO7InH4UHlY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:882846969497:android:8873c5c84ec3286d149208",
+        "android_client_info": {
+          "package_name": "com.user.ablagro"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDlKDXETBmAS6W_0qV658gJmO7InH4UHlY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

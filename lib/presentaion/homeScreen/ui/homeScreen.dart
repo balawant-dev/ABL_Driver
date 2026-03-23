@@ -8,6 +8,7 @@ import 'package:abldriver/widget/custom_text.dart';
 import 'package:abldriver/widget/navigator_method.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../notification/ui/getNotificatin.dart';
 import '../../profile/ui/profileScreen.dart';
 import '../provider/homeProvider.dart';
 import 'newOrderScreen.dart';
@@ -161,10 +162,15 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ),
                             SizedBox(width: 10,),
-                            CustomImageView(
-                              imagePath: AppImages.notification,
-                              height: 45,
-                              width: 45,
+                            GestureDetector(
+                              onTap: (){
+                                navPush(context: context, action: NotificationScreen());
+                              },
+                              child: CustomImageView(
+                                imagePath: AppImages.notification,
+                                height: 45,
+                                width: 45,
+                              ),
                             )
                           ],
                         ),

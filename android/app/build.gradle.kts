@@ -24,7 +24,7 @@ android {
         applicationId = "com.driver.ablagro"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = 23
+        minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = 2
         versionName = "1.0.1"
