@@ -34,6 +34,8 @@ class Order {
   var paymentMode;
   var createdAt;
   var totalKm;
+  var pickedupAt;
+  var deliveredAt;
   var productCount;
 
   Order(
@@ -48,6 +50,8 @@ class Order {
         this.paymentMode,
         this.createdAt,
         this.totalKm,
+        this.pickedupAt,
+        this.deliveredAt,
         this.productCount});
 
   Order.fromJson(Map<String, dynamic> json) {
@@ -70,6 +74,8 @@ class Order {
     paymentMode = json['paymentMode'];
     createdAt = json['createdAt'];
     totalKm = json['totalKm'];
+    pickedupAt = json['pickedupAt'];
+    deliveredAt = json['deliveredAt'];
     productCount = json['productCount'];
   }
 
@@ -92,6 +98,8 @@ class Order {
     data['paymentMode'] = this.paymentMode;
     data['createdAt'] = this.createdAt;
     data['totalKm'] = this.totalKm;
+    data['pickedupAt'] = this.pickedupAt;
+    data['deliveredAt'] = this.deliveredAt;
     data['productCount'] = this.productCount;
     return data;
   }

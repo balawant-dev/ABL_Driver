@@ -26,11 +26,19 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<ProfileProvider>(context, listen: false).fetchProfileData();
+      final profileProvider =
+      Provider.of<ProfileProvider>(context, listen: false);
       final homeProvider =
       Provider.of<HomeProvider>(context, listen: false);
       homeProvider.fetchHomeHederData();
-      homeProvider.fetchNewOrderData();
+      //homeProvider.fetchNewOrderData();
+      final status = profileProvider.getProfileData?.data?.status ?? "";
+
+      setState(() {
+        isOn = status.toLowerCase() == "active";
+      });
     });
+
   }
   bool isOn = false;
   int selectedIndex = 0;
@@ -49,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   await profileProvider.fetchProfileData();
                   await homeProvider.fetchHomeHederData();
                   await homeProvider.fetchNewOrderData();
-                 // await homeProvider.fetchOnGoingOrderData();
+                  await homeProvider.fetchOnGoingOrderData();
                 },
                 child: SingleChildScrollView(
                   child: Padding(
@@ -62,11 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             GestureDetector(
                               onTap: (){
                                 navPush(context: context, action: ProfileScreen());
-                               // navPushLeft(context: context, action: ProfileScreen(), duration:300);
-                                //navPushRight(context: context, action: ProfileScreen(), duration:300);
-                                //navPushTop(context: context, action: ProfileScreen(), duration: 300);
-                               // navPushFade(context: context, action: ProfileScreen(), duration: 300);
-                               // navPushBottom(context: context, action: ProfileScreen(), duration: 300);
+
                               },
                               child: Row(
                                 children: [
@@ -116,6 +120,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             GestureDetector(
                               onTap: () async {
                                 final driverId = provider.getProfileData?.data?.sId ?? "";
+                               // final statusin=
                                 if (driverId.isEmpty) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(content: Text("Driver ID not found")),
@@ -181,21 +186,21 @@ class _HomeScreenState extends State<HomeScreen> {
                             CardDetails(
                               color1: ColorResource.card11,
                               color2: ColorResource.card12,
-                              timeing: "Today’s Earning",
+                              timeing: "Today’s Order",
                               amount: homeProvider.getHomeHederData?.data?.today?.totalIncome ?? 0,
                               completed: homeProvider.getHomeHederData?.data?.today?.totalOrders ?? 0,
                             ),
                             CardDetails(
                               color1: ColorResource.card21,
                               color2: ColorResource.card22,
-                              timeing: "Weekly Earning",
+                              timeing: "Weekly Order",
                               amount: homeProvider.getHomeHederData?.data?.last7Days?.totalIncome ?? 0,
                               completed: homeProvider.getHomeHederData?.data?.last7Days?.totalOrders ?? 0,
                             ),
                             CardDetails(
                               color1: ColorResource.card31,
                               color2: ColorResource.card32,
-                              timeing: "Monthly Earning",
+                              timeing: "Monthly Order",
                               amount: homeProvider.getHomeHederData?.data?.last30Days?.totalIncome ?? 0,
                               completed: homeProvider.getHomeHederData?.data?.last30Days?.totalOrders ?? 0,
                             ),
@@ -256,6 +261,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Padding(
           padding: EdgeInsets.all(10),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CustomText(
               timeing,
@@ -263,54 +269,14 @@ class _HomeScreenState extends State<HomeScreen> {
               weight: FontWeight.w600,
               color: ColorResource.white,
             ),
-            SizedBox(height: 5,),
-            // CustomText(
-            //   '₹${amount.toString()}',
-            //   size: 14,
-            //   weight: FontWeight.w600,
-            //   color: ColorResource.white,
-            // ),
-            CustomText('₹ $amount',
-                size: 18,
+            SizedBox(height: 10,),
+
+            CustomText(completed.toString(),
+                size: 20,
                 weight: FontWeight.bold,
                 color: Colors.white),
-            Spacer(),
 
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CustomText('Completed',
-                    size: 10,
-                    weight: FontWeight.w400,
-                    color: Colors.white70),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: CustomText(
-                    completed.toString(),
-                    size: 10,
-                    weight: FontWeight.w600,
-                    color: Colors.white,
-                  ),
-                )
-              ],
-            )
-            // CustomText(
-            //   'Order Completed',
-            //   size: 8,
-            //   weight: FontWeight.w400,
-            //   color: ColorResource.white,
-            // ),
-            // SizedBox(height: 5,),
-            // CustomText(
-            //   completed.toString(),
-            //   size: 8,
-            //   weight: FontWeight.w400,
-            //   color: ColorResource.white,
-            // ),
+
           ],
         ),
       ),

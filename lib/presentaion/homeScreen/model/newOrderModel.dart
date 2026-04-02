@@ -41,6 +41,8 @@ class OrderList {
   var totalAmount;
   String? paymentMode;
   String? createdAt;
+  String? deliveredAt;
+  String? pickedupAt;
   var totalKm;
 
   OrderList(
@@ -54,6 +56,8 @@ class OrderList {
         this.totalAmount,
         this.paymentMode,
         this.createdAt,
+        this.pickedupAt,
+        this.deliveredAt,
         this.totalKm});
 
   OrderList.fromJson(Map<String, dynamic> json) {
@@ -75,6 +79,8 @@ class OrderList {
     totalAmount = json['totalAmount'];
     paymentMode = json['paymentMode'];
     createdAt = json['createdAt'];
+    pickedupAt = json['pickedupAt'];
+    deliveredAt = json['deliveredAt'];
     totalKm = json['totalKm'];
   }
 
@@ -96,6 +102,8 @@ class OrderList {
     data['totalAmount'] = this.totalAmount;
     data['paymentMode'] = this.paymentMode;
     data['createdAt'] = this.createdAt;
+    data['pickedupAt'] = this.pickedupAt;
+    data['deliveredAt'] = this.deliveredAt;
     data['totalKm'] = this.totalKm;
     return data;
   }

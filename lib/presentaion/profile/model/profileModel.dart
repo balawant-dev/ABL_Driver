@@ -48,6 +48,7 @@ class Data {
   String? vehicleRcFrontImage;
   String? vehicleRcBackImage;
   String? idProofImage;
+  String? status;
 
   Data(
       {this.sId,
@@ -74,7 +75,9 @@ class Data {
         this.profileImage,
         this.vehicleRcFrontImage,
         this.vehicleRcBackImage,
-        this.idProofImage});
+        this.idProofImage,
+        this.status
+      });
 
   Data.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -102,6 +105,7 @@ class Data {
     vehicleRcFrontImage = json['vehicleRcFrontImage'];
     vehicleRcBackImage = json['vehicleRcBackImage'];
     idProofImage = json['idProofImage'];
+    status = json['status'];
   }
 
   Map<String, dynamic> toJson() {
@@ -131,6 +135,7 @@ class Data {
     data['vehicleRcFrontImage'] = this.vehicleRcFrontImage;
     data['vehicleRcBackImage'] = this.vehicleRcBackImage;
     data['idProofImage'] = this.idProofImage;
+    data['status'] = this.status;
     return data;
   }
 }

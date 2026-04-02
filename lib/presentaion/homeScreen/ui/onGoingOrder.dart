@@ -15,7 +15,7 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../widget/primary_button.dart';
 import '../provider/homeProvider.dart';
-
+import 'package:intl/intl.dart';
 class OnGoingOrder extends StatefulWidget {
   const OnGoingOrder({super.key});
 
@@ -56,6 +56,47 @@ class _OnGoingOrderState extends State<OnGoingOrder> {
 
     });
   }
+
+
+  Future<bool?> showPickupDialog(BuildContext context) async {
+    return await showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Column(
+            children: [
+              CustomText(
+                'Confirm Pickup',
+                size: 16,
+                weight: FontWeight.w700,
+              ),
+              SizedBox(height: 10,),
+              CustomText(
+                'Are you sure you want to pickup this order?',
+                size: 14,
+                weight: FontWeight.w400,
+              ),
+              SizedBox(height: 20,),
+              PrimaryButton(
+                title: "Cancel",
+                onTap: () => Navigator.pop(context, false),
+              ),
+              SizedBox(height: 10,),
+              PrimaryButton(
+                  title: 'Pickup',
+                  onTap: (){
+                    Navigator.pop(context, true);
+                  }
+              )
+            ],
+          ),
+
+
+        );
+      },
+    );
+  }
+
   Future<File?> showDeliveryDialog(BuildContext context) async {
     File? selectedImage;
 
@@ -122,51 +163,51 @@ class _OnGoingOrderState extends State<OnGoingOrder> {
               actions: [
 
                 SizedBox(
-                width: 250,
-                height: 45,
-            child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFF086B48),
-            shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(40),
-            ),
-            elevation: 4,
-            shadowColor: const Color(0x26000000),
-            ),
-            onPressed: () {
-            if (selectedImage == null) {
-            ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-            content: Text("Please upload image"),
-            ),
-            );
-            return;
-            }
+                  width: 250,
+                  height: 45,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF086B48),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(40),
+                      ),
+                      elevation: 4,
+                      shadowColor: const Color(0x26000000),
+                    ),
+                    onPressed: () {
+                      if (selectedImage == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text("Please upload image"),
+                          ),
+                        );
+                        return;
+                      }
 
-            Navigator.pop(context, selectedImage);
-            },
-            child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-            Icon(
-            Icons.upload,
-            color: Colors.white,
-            size: 20,
-            ),
-            SizedBox(width: 10),
-            Text(
-            'Click here to upload',
-            style: TextStyle(
-            color: Colors.white,
-            fontSize: 14,
-            fontFamily: 'Poppins',
-            fontWeight: FontWeight.w500,
-            ),
-            ),
-            ],
-            ),
-            ),
-            ),
+                      Navigator.pop(context, selectedImage);
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(
+                          Icons.upload,
+                          color: Colors.white,
+                          size: 20,
+                        ),
+                        SizedBox(width: 10),
+                        Text(
+                          'Click here to upload',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
 
             ],
             );
@@ -205,6 +246,38 @@ class _OnGoingOrderState extends State<OnGoingOrder> {
               physics: const NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
                 final order = orders[index];
+                DateTime? pickedDateTime;
+
+                // ✅ PICKUP
+                DateTime? pickupDateTime;
+                if (order.pickedupAt != null && order.pickedupAt!.isNotEmpty) {
+                  pickupDateTime = DateTime.parse(order.pickedupAt!).toLocal();
+                }
+
+                String pickupTime = pickupDateTime != null
+                    ? DateFormat('hh:mm a').format(pickupDateTime)
+                    : "-";
+
+                String pickupDate = pickupDateTime != null
+                    ? DateFormat('dd-MM-yy').format(pickupDateTime)
+                    : "-";
+
+
+
+                DateTime? deliveryDateTime;
+                if (order.deliveredAt != null && order.deliveredAt!.isNotEmpty) {
+                  deliveryDateTime = DateTime.parse(order.deliveredAt!).toLocal();
+                }
+
+                String deliverTime = deliveryDateTime != null
+                    ? DateFormat('hh:mm a').format(deliveryDateTime)
+                    : "-";
+
+                String deliverDate = deliveryDateTime != null
+                    ? DateFormat('dd-MM-yy').format(deliveryDateTime)
+                    : "-";
+
+
 
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 12),
@@ -226,58 +299,56 @@ class _OnGoingOrderState extends State<OnGoingOrder> {
                     productPrice: order.products?.first.price.toString() ?? "",
                     productQuantity: order.products?.first.quantity.toString() ?? "",
                     productFinalPrice: order.products?.first.finalPrice.toString() ?? "",
+                    status: order.status ?? "",
+                      pickuptime: pickupTime ,
+                      pickupdate: pickupDate,
+                      delivertime: deliverTime ,
+                      deliverdate: deliverDate,
 
 
-
-                      // onTap: () async {
-                      //   final homeProvider =
-                      //   Provider.of<HomeProvider>(context, listen: false);
-                      //
-                      //   File? image = await showDeliveryDialog(context);
-                      //   if (image == null) return;
-                      //
-                      //   bool success = await homeProvider.acceptOrderStatus1(
-                      //     orderId: order.sId ?? "",
-                      //     status: "delivered",
-                      //     deliveryProofImage: image,
-                      //   );
-                      //
-                      //   if (!context.mounted) return; // ✅ MOST IMPORTANT
-                      //
-                      //   if (success) {
-                      //     Future.microtask(() {
-                      //       Navigator.pushReplacement(
-                      //         context,
-                      //         MaterialPageRoute(
-                      //           builder: (_) => DeliveryCompletedScreen(sId: order.sId ?? "",),
-                      //         ),
-                      //       );
-                      //     });
-                      //   } else {
-                      //     ScaffoldMessenger.of(context).showSnackBar(
-                      //       const SnackBar(content: Text("Failed to update status")),
-                      //     );
-                      //   }
-                      // }
                       onTap: () async {
                         final homeProvider =
                         Provider.of<HomeProvider>(context, listen: false);
 
-                        // 🔒 Prevent multiple taps
                         if (homeProvider.isLoading) return;
 
-                        // 1️⃣ Open camera dialog
-                        final File? image = await showDeliveryDialog(context);
-                        if (image == null) return;
+                        print("STATUS = ${order.status}");
 
-                        // 2️⃣ Call API
-                  await homeProvider.acceptOrderStatus1(
-                          orderId: order.sId ?? "",
-                          status: "delivered",
-                          deliveryProofImage: image,context: context
-                        );
+                        // 👉 RUNNING → Pickup Dialog
+                        if (order.status == "running") {
+                          final bool? confirm = await showPickupDialog(context);
 
+                          if (confirm == true) {
+                            final success = await homeProvider.acceptOrderStatus(
+                              orderId: order.sId ?? "",
+                              status: "picked up",
+                            );
+
+
+                          }
+                        }
+
+                        // 👉 ACCEPTED → Delivery Dialog
+                        else if (order.status == "picked up") {
+                          final File? image = await showDeliveryDialog(context);
+                          if (image == null) return;
+
+                          final success = await homeProvider.acceptOrderStatus1(
+                            orderId: order.sId ?? "",
+                            status: "delivered",
+                            deliveryProofImage: image,
+                            context: context,
+                          );
+
+                          if (success) {
+                            setState(() {
+                              order.status = "delivered";
+                            });
+                          }
+                        }
                       }
+
+
 
 
 
@@ -319,6 +390,12 @@ class _OnGoingOrderState extends State<OnGoingOrder> {
     required String productQuantity,
     required String productFinalPrice,
     required VoidCallback onTap,
+    required String status,
+    required String pickuptime,
+    required String pickupdate,
+    required String deliverdate,
+    required String delivertime,
+
 
   }){
     return  Container(
@@ -418,13 +495,7 @@ class _OnGoingOrderState extends State<OnGoingOrder> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              // CustomText(
-                              //   // 'H- 116, Sec-59, Noida',
-                              //   pickup,
-                              //   size: 13,
-                              //   weight: FontWeight.w400,
-                              //   color: ColorResource.black,
-                              // ),
+
                               SizedBox(
                                 height: 40,
                                 child: Text(
@@ -449,14 +520,16 @@ class _OnGoingOrderState extends State<OnGoingOrder> {
                               ),
                               SizedBox(height: 5,),
                               CustomText(
-                                '10:00 AM',
+                               // '10:00 AM',
+                                pickuptime,
                                 size: 11,
                                 weight: FontWeight.w400,
                                 color: ColorResource.black,
                               ),
                               SizedBox(height: 5,),
                               CustomText(
-                                '09-12-24',
+                                pickupdate,
+                                //'09-12-24',
                                 size: 11,
                                 weight: FontWeight.w400,
                                 color: ColorResource.black,
@@ -549,14 +622,14 @@ class _OnGoingOrderState extends State<OnGoingOrder> {
                                 ),
                                 SizedBox(height: 5,),
                                 CustomText(
-                                  '10:00 AM',
+                                  delivertime,
                                   size: 11,
                                   weight: FontWeight.w400,
                                   color: ColorResource.black,
                                 ),
                                 SizedBox(height: 5,),
                                 CustomText(
-                                  '09-12-24',
+                                  deliverdate,
                                   size: 11,
                                   weight: FontWeight.w400,
                                   color: ColorResource.black,
@@ -839,7 +912,13 @@ class _OnGoingOrderState extends State<OnGoingOrder> {
             Center(
               child: Container(
                 width: 165,
-                child: PrimaryButton(title: "Update Status", onTap: onTap),
+                child: PrimaryButton(
+                    title: status == "running"
+                        ? "Pickup"
+                        : status == "picked up"
+                        ? "Deliver"
+                        : "Completed",
+                    onTap: onTap),
               ),
             ),
 

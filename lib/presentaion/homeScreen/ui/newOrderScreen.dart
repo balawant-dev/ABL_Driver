@@ -121,17 +121,11 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                 onAccepted: () async {
                   final homeProvider =
                   Provider.of<HomeProvider>(context, listen: false);
-                  // bool confirm = await showAcceptDialog(context);
-                  //
-                  // if (!confirm) return;
                   await homeProvider.acceptOrderStatus(
                     orderId: order.sId ?? "",
                     status: "accepted",
-                   // status: "delivered",
                   );
                 },
-
-
               ),
             );
           },

@@ -18,14 +18,14 @@ class _MainBottomBarState extends State<MainBottomBar> {
 
   final List<String> _titles = [
     'Home',
-    'Wallet',
+   // 'Wallet',
     'Order History',
     'SOS',
   ];
 
   final List<Widget> _pages = const [
     HomeScreen(),
-    WalletScreen(),
+   // WalletScreen(),
     OrderHistoryScreen(),
     SosScreen(),
   ];
@@ -181,23 +181,23 @@ class _MainBottomBarState extends State<MainBottomBar> {
               unselectedIcon: AppIcons.inActiveHome,
               index: 0,
             ),
-            _buildItem(
-              label: 'Wallet',
-              selectedIcon: AppIcons.activeWallet,
-              unselectedIcon: AppIcons.inActiveWallet,
-              index: 1,
-            ),
+            // _buildItem(
+            //   label: 'Wallet',
+            //   selectedIcon: AppIcons.activeWallet,
+            //   unselectedIcon: AppIcons.inActiveWallet,
+            //   index: 1,
+            // ),
             _buildItem(
               label: 'Order History',
               selectedIcon: AppIcons.inActiveHistory,
               unselectedIcon: AppIcons.inActiveHistory,
-              index: 2,
+              index: 1,
             ),
             _buildItem(
               label: 'SOS',
               selectedIcon: AppIcons.inActiveSos,
               unselectedIcon: AppIcons.inActiveSos,
-              index: 3,
+              index: 2,
             ),
           ],
         ),

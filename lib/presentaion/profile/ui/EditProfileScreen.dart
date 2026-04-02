@@ -411,7 +411,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
                 /// ================= ID PROOF =================
                 CustomInputField(
-                  hintText: 'Upload ID Proof',
+                  hintText: 'ID Proof',
                   controller: provider.IDProofController
                     ..text = data?.idProofImage?.split('/').last ?? '',
                   readOnly: true,
@@ -427,6 +427,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 CustomInputField(
                   hintText: 'Aadhar Number',
                   controller: provider.adharNumberController,
+                  maxLength: 12,
                 ),
                 const SizedBox(height: 10),
 

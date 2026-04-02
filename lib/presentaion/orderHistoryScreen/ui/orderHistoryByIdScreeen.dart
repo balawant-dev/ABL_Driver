@@ -90,7 +90,49 @@ class _OrderHistoryByIdScreenState extends State<OrderHistoryByIdScreen> {
           );
         }
         final order = provider.orderHistoryByIdModel?.order;
+        DateTime? parseDate(String? date) {
+          try {
+            if (date == null || date.trim().isEmpty) return null;
+            return DateTime.parse(date).toLocal();
+          } catch (e) {
+            print("Date parse error: $e");
+            return null;
+          }
+        }
+        final pickupDateTime = parseDate(order?.pickedupAt);
+
+        final pickupTime = pickupDateTime != null
+            ? DateFormat('hh:mm a').format(pickupDateTime)
+            : "-";
+
+        final pickupDate = pickupDateTime != null
+            ? DateFormat('dd-MM-yy').format(pickupDateTime)
+            : "-";
+
+        print("pickupTime: $pickupTime");
+        print("pickupDate: $pickupDate");
+        print('pickupdateandtime : $pickupDateTime');
+        print("MODEL pickedupAt: ${order?.pickedupAt}");
+        print("MODEL deliveredAt: ${order?.deliveredAt}");
+
+// ✅ DELIVERY
+        final deliveryDateTime = parseDate(order?.deliveredAt);
+
+        final deliverTime = deliveryDateTime != null
+            ? DateFormat('hh:mm a').format(deliveryDateTime)
+            : "-";
+
+        final deliverDate = deliveryDateTime != null
+            ? DateFormat('dd-MM-yy').format(deliveryDateTime)
+            : "-";
+
+        print("deliveryDateTime: $deliveryDateTime");
+        print("deliverTime: $deliverTime");
+        print("deliverDate: $deliverDate");
+
+
         if (order == null) {
+
           return Scaffold(
             appBar: CustomAppBar(title: 'Order History'),
             body: Center(
@@ -114,6 +156,7 @@ class _OrderHistoryByIdScreenState extends State<OrderHistoryByIdScreen> {
               child: SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.all(15),
+
                   child: CardData(
                       orerId:order.bookingId ?? "",
                       pickup: order.pickup?.address ?? "",
@@ -128,7 +171,11 @@ class _OrderHistoryByIdScreenState extends State<OrderHistoryByIdScreen> {
                       totalAmount: order.totalAmount.toString(),
                       orderStatus: widget.orderStatus,
                       paymentMood: order.paymentMode ?? "",
-                      orderHistoryByIdModel: provider.orderHistoryByIdModel
+                      orderHistoryByIdModel: provider.orderHistoryByIdModel,
+                    pickuptime: pickupTime ,
+                    pickupdate: pickupDate,
+                    delivertime: deliverTime ,
+                    deliverdate: deliverDate,
                   ),
                 ),
               ),
@@ -154,6 +201,10 @@ class _OrderHistoryByIdScreenState extends State<OrderHistoryByIdScreen> {
     required String deliveryCharge,
     required String totalAmount,
     required  OrderHistoryByIdModel? orderHistoryByIdModel,
+    required String pickuptime,
+    required String pickupdate,
+    required String deliverdate,
+    required String delivertime,
   }) {
     return Container(
       clipBehavior: Clip.antiAlias,
@@ -261,14 +312,14 @@ class _OrderHistoryByIdScreenState extends State<OrderHistoryByIdScreen> {
                               ),
                               SizedBox(height: 5,),
                               CustomText(
-                                '10:00 AM',
+                                pickuptime,
                                 size: 11,
                                 weight: FontWeight.w400,
                                 color: ColorResource.black,
                               ),
                               SizedBox(height: 5,),
                               CustomText(
-                                '09-12-24',
+                               pickupdate,
                                 size: 11,
                                 weight: FontWeight.w400,
                                 color: ColorResource.black,
@@ -338,14 +389,14 @@ class _OrderHistoryByIdScreenState extends State<OrderHistoryByIdScreen> {
                               ),
                               SizedBox(height: 5,),
                               CustomText(
-                                '10:00 AM',
+                                delivertime,
                                 size: 11,
                                 weight: FontWeight.w400,
                                 color: ColorResource.black,
                               ),
                               SizedBox(height: 5,),
                               CustomText(
-                                '09-12-24',
+                                deliverdate,
                                 size: 11,
                                 weight: FontWeight.w400,
                                 color: ColorResource.black,
