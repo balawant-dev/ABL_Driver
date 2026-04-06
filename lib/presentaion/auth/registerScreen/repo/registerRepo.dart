@@ -23,7 +23,7 @@ class RegisterRepository {
     required File profileImage,
     required File vehicleRcFrontImage,
     required File vehicleRcBackImage,
-    required File idProofImage,
+   // required File idProofImage,
   }) async {
     final url = AppUrl.driverRegister;
 
@@ -44,7 +44,7 @@ class RegisterRepository {
         "profileImage": profileImage,
         "vehicleRcFrontImage": vehicleRcFrontImage,
         "vehicleRcBackImage": vehicleRcBackImage,
-        "idProofImage": idProofImage,
+       // "idProofImage": idProofImage,
       };
 
       print("API Response: $url");

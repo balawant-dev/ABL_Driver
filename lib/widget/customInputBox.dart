@@ -1,6 +1,147 @@
-// import 'package:flutter/material.dart';
-// import 'package:flutter/services.dart';
-//
+
+import 'package:abldriver/app/theme/color_resource.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+class CustomInputField extends StatelessWidget {
+  final String hintText;
+  final TextEditingController controller;
+  final TextInputType keyboardType;
+  final bool readOnly;
+  final VoidCallback? onTap;
+
+  final int? minLength;
+  final int? maxLength;
+  final bool digitsOnly;
+
+  final Widget? suffixIcon;
+  final VoidCallback? onSuffixTap;
+
+  final int maxLines;
+
+  // ✅ NEW
+  final String? errorText;
+
+  const CustomInputField({
+    super.key,
+    required this.hintText,
+    required this.controller,
+    this.keyboardType = TextInputType.text,
+    this.readOnly = false,
+    this.onTap,
+    this.minLength,
+    this.maxLength,
+    this.digitsOnly = false,
+    this.suffixIcon,
+    this.onSuffixTap,
+    this.maxLines = 1,
+    this.errorText, // ✅ NEW
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          margin: const EdgeInsets.all(1),
+          width: double.infinity,
+          height: maxLines == 1 ? 50 : null,
+          decoration: ShapeDecoration(
+            color: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+              side: BorderSide(
+                color: errorText != null ? Colors.red : Colors.transparent,
+                width: 1.2,
+              ),
+            ),
+            shadows: const [
+              BoxShadow(
+                color: Color(0x3F000000),
+                blurRadius: 4,
+                offset: Offset(0, 0),
+              ),
+            ],
+          ),
+          child: TextField(
+            controller: controller,
+            keyboardType: keyboardType,
+            readOnly: readOnly,
+            onTap: onTap,
+            maxLength: maxLength,
+            maxLines: maxLines,
+            minLines: maxLines,
+            inputFormatters: [
+              if (digitsOnly) FilteringTextInputFormatter.digitsOnly,
+              if (maxLength != null)
+                LengthLimitingTextInputFormatter(maxLength),
+            ],
+            style: const TextStyle(
+              fontSize: 14,
+              fontFamily: 'Poppins',
+            ),
+            decoration: InputDecoration(
+              counterText: "",
+              border: InputBorder.none,
+              hintText: hintText,
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 10,
+                vertical: 12,
+              ),
+              suffixIcon: suffixIcon != null
+                  ? InkWell(
+                onTap: onSuffixTap,
+                child: SizedBox(
+                  width: 30,
+                  height: 30,
+                  child: Center(child: suffixIcon),
+                ),
+              )
+                  : null,
+              hintStyle: TextStyle(
+                color: Colors.black.withOpacity(0.5),
+                fontSize: 12,
+                fontFamily: 'Poppins',
+                fontWeight: FontWeight.w400,
+                letterSpacing: 0.24,
+              ),
+            ),
+          ),
+        ),
+
+        // ✅ Error Text Show
+        if (errorText != null) ...[
+          const SizedBox(height: 5),
+          Padding(
+            padding: const EdgeInsets.only(left: 6),
+            child: Text(
+              errorText!,
+              style: const TextStyle(
+                color: Colors.red,
+                fontSize: 11,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+        ],
+      ],
+    );
+  }
+
+  bool isValid() {
+    if (minLength != null && controller.text.length < minLength!) {
+      return false;
+    }
+    if (maxLength != null && controller.text.length > maxLength!) {
+      return false;
+    }
+    return true;
+  }
+}
+
 // class CustomInputField extends StatelessWidget {
 //   final String hintText;
 //   final TextEditingController controller;
@@ -8,10 +149,14 @@
 //   final bool readOnly;
 //   final VoidCallback? onTap;
 //
-//   // 🔹 NEW
 //   final int? minLength;
 //   final int? maxLength;
 //   final bool digitsOnly;
+//
+//   final Widget? suffixIcon;
+//   final VoidCallback? onSuffixTap;
+//
+//   final int maxLines;
 //
 //   const CustomInputField({
 //     super.key,
@@ -23,14 +168,19 @@
 //     this.minLength,
 //     this.maxLength,
 //     this.digitsOnly = false,
+//     this.suffixIcon,
+//     this.onSuffixTap,
+//     this.maxLines = 1,
 //   });
 //
 //   @override
 //   Widget build(BuildContext context) {
 //     return Container(
-//       margin: EdgeInsets.all(1),
+//       margin: const EdgeInsets.all(1),
 //       width: double.infinity,
-//       height: 50,
+//
+//       height: maxLines == 1 ? 50 : null,
+//
 //       decoration: ShapeDecoration(
 //         color: Colors.white,
 //         shape: RoundedRectangleBorder(
@@ -50,6 +200,11 @@
 //         readOnly: readOnly,
 //         onTap: onTap,
 //         maxLength: maxLength,
+//
+//
+//         maxLines: maxLines,
+//         minLines: maxLines,
+//
 //         inputFormatters: [
 //           if (digitsOnly) FilteringTextInputFormatter.digitsOnly,
 //           if (maxLength != null)
@@ -60,13 +215,28 @@
 //           fontFamily: 'Poppins',
 //         ),
 //         decoration: InputDecoration(
-//           counterText: "", // hides length counter
-//           contentPadding:
-//           const EdgeInsets.symmetric(horizontal: 10, vertical: 16),
+//           counterText: "",
 //           border: InputBorder.none,
 //           hintText: hintText,
+//
+//           contentPadding: const EdgeInsets.symmetric(
+//             horizontal: 10,
+//             vertical: 12,
+//           ),
+//
+//           suffixIcon: suffixIcon != null
+//               ? InkWell(
+//             onTap: onSuffixTap,
+//             child: SizedBox(
+//               width: 30,
+//               height: 30,
+//               child: Center(child: suffixIcon),
+//             ),
+//           )
+//               : null,
+//
 //           hintStyle: TextStyle(
-//             color: Colors.black.withValues(alpha: 0.50),
+//             color: Colors.black.withOpacity(0.5),
 //             fontSize: 12,
 //             fontFamily: 'Poppins',
 //             fontWeight: FontWeight.w400,
@@ -77,7 +247,6 @@
 //     );
 //   }
 //
-//   /// 🔹 Call this when validating (button click)
 //   bool isValid() {
 //     if (minLength != null && controller.text.length < minLength!) {
 //       return false;
@@ -88,131 +257,7 @@
 //     return true;
 //   }
 // }
-
-
-import 'package:abldriver/app/theme/color_resource.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-
-
-class CustomInputField extends StatelessWidget {
-  final String hintText;
-  final TextEditingController controller;
-  final TextInputType keyboardType;
-  final bool readOnly;
-  final VoidCallback? onTap;
-
-  final int? minLength;
-  final int? maxLength;
-  final bool digitsOnly;
-
-  final Widget? suffixIcon;
-  final VoidCallback? onSuffixTap;
-
-  final int maxLines;
-
-  const CustomInputField({
-    super.key,
-    required this.hintText,
-    required this.controller,
-    this.keyboardType = TextInputType.text,
-    this.readOnly = false,
-    this.onTap,
-    this.minLength,
-    this.maxLength,
-    this.digitsOnly = false,
-    this.suffixIcon,
-    this.onSuffixTap,
-    this.maxLines = 1,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(1),
-      width: double.infinity,
-
-      // ✅ IMPORTANT FIX
-      height: maxLines == 1 ? 50 : null,
-
-      decoration: ShapeDecoration(
-        color: Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
-        shadows: const [
-          BoxShadow(
-            color: Color(0x3F000000),
-            blurRadius: 4,
-            offset: Offset(0, 0),
-          ),
-        ],
-      ),
-      child: TextField(
-        controller: controller,
-        keyboardType: keyboardType,
-        readOnly: readOnly,
-        onTap: onTap,
-        maxLength: maxLength,
-
-        // ✅ IMPORTANT FIX
-        maxLines: maxLines,
-        minLines: maxLines,
-
-        inputFormatters: [
-          if (digitsOnly) FilteringTextInputFormatter.digitsOnly,
-          if (maxLength != null)
-            LengthLimitingTextInputFormatter(maxLength),
-        ],
-        style: const TextStyle(
-          fontSize: 14,
-          fontFamily: 'Poppins',
-        ),
-        decoration: InputDecoration(
-          counterText: "",
-          border: InputBorder.none,
-          hintText: hintText,
-
-          // ✅ better padding for multi-line
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: 10,
-            vertical: 12,
-          ),
-
-          suffixIcon: suffixIcon != null
-              ? InkWell(
-            onTap: onSuffixTap,
-            child: SizedBox(
-              width: 30,
-              height: 30,
-              child: Center(child: suffixIcon),
-            ),
-          )
-              : null,
-
-          hintStyle: TextStyle(
-            color: Colors.black.withOpacity(0.5),
-            fontSize: 12,
-            fontFamily: 'Poppins',
-            fontWeight: FontWeight.w400,
-            letterSpacing: 0.24,
-          ),
-        ),
-      ),
-    );
-  }
-
-  bool isValid() {
-    if (minLength != null && controller.text.length < minLength!) {
-      return false;
-    }
-    if (maxLength != null && controller.text.length > maxLength!) {
-      return false;
-    }
-    return true;
-  }
-}
-
+//
 
 
 class CustomInputField1 extends StatelessWidget {

@@ -46,12 +46,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
   }
 
-  Future<void> _pickIdProofImage(RegisterProvider provider) async {
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-    if (image != null) {
-      provider.setIdProofImage(File(image.path));
-    }
-  }
+  // Future<void> _pickIdProofImage(RegisterProvider provider) async {
+  //   final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+  //   if (image != null) {
+  //     provider.setIdProofImage(File(image.path));
+  //   }
+  // }
 
   void _showImagePicker(RegisterProvider provider) {
     showModalBottomSheet(
@@ -152,41 +152,48 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   CustomInputField(
                     hintText: 'Name',
                     controller: provider.nameController,
+                    errorText: provider.nameError,
                   ),
                   const SizedBox(height: 10),
                   CustomInputField(
                     hintText: 'Phone Number',
                     controller: provider.phoneController,
                     keyboardType: TextInputType.number,
+                    errorText: provider.phoneError,
                     maxLength: 10,
                   ),
                   const SizedBox(height: 10),
                   CustomInputField(
                     hintText: 'Email ID',
                     controller: provider.emailController,
+                    errorText: provider.emailError,
                   ),
                   const SizedBox(height: 10),
                   CustomInputField(
                     hintText: 'Address',
                     controller: provider.addressController,
+                    errorText: provider.addressError,
+                    maxLength: 12,
                   ),
                   const SizedBox(height: 10),
 
                   // ID Proof Upload
-                  CustomInputField(
-                    hintText: 'ID Proof',
-                    controller: provider.IDProofController,
-                    readOnly: true,
-                    suffixIcon: CustomImageView(
-                        imagePath: AppImages.attachment, height: 20, width: 20),
-                    onSuffixTap: () => _pickIdProofImage(provider),
-                  ),
+                  // CustomInputField(
+                  //   hintText: 'ID Proof',
+                  //   controller: provider.IDProofController,
+                  //   readOnly: true,
+                  //   suffixIcon: CustomImageView(
+                  //       imagePath: AppImages.attachment, height: 20, width: 20),
+                  //   onSuffixTap: () => _pickIdProofImage(provider),
+                  // ),
                   const SizedBox(height: 10),
 
                   CustomInputField(
                     hintText: 'Aadhar Card Number',
                     controller: provider.adharController,
+                    keyboardType: TextInputType.number,
                     maxLength: 12,
+                    errorText: provider.adharError,
                   ),
                   const SizedBox(height: 10),
 
@@ -202,12 +209,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   CustomInputField(
                     hintText: 'Vehical Number',
                     controller: provider.vahicalNumberController,
+                    errorText: provider.vehicleNumberError,
                   ),
                   const SizedBox(height: 10),
                   CustomInputField(
                     hintText: 'Pincode',
                     controller: provider.pincodeController,
                     maxLength: 6,
+                    keyboardType: TextInputType.number,
+                    errorText: provider.pincodeError,
                   ),
                   const SizedBox(height: 10),
 
@@ -322,69 +332,140 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   CustomInputField(
                     hintText: 'DL Number',
                     controller: provider.licenseController,
+                    errorText: provider.licenseError,
                   ),
                   const SizedBox(height: 10),
 
+                  if (provider.imageError != null)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 10),
+                      child: Text(
+                        provider.imageError!,
+                        style: const TextStyle(
+                          color: Colors.red,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
+                  // PrimaryButton(
+                  //  // title: 'Submit For Approval',
+                  //   title: provider.isLoading ? "Sending.." : 'Submit For Approval',
+                  //
+                  //     onTap: () async {
+                  //       await provider.registerDriver();
+                  //
+                  //       if (provider.success) {
+                  //         showDialog(
+                  //           context: context,
+                  //           builder: (context) {
+                  //             return Dialog(
+                  //               backgroundColor: ColorResource.buttonBackground,
+                  //               shape: RoundedRectangleBorder(
+                  //                 borderRadius: BorderRadius.circular(15),
+                  //               ),
+                  //               insetPadding: const EdgeInsets.all(30),
+                  //               child: Padding(
+                  //                 padding: const EdgeInsets.all(10.0),
+                  //                 child: Column(
+                  //                   mainAxisSize: MainAxisSize.min,
+                  //                   children: [
+                  //                     CustomText(
+                  //                       'Registration Submitted',
+                  //                       size: 22,
+                  //                       weight: FontWeight.w600,
+                  //                       color: ColorResource.white,
+                  //                     ),
+                  //                     const SizedBox(height: 20),
+                  //                     CustomText(
+                  //                       "Thank you for registering! Your details are under review.",
+                  //                       size: 12,
+                  //                       color: ColorResource.white,
+                  //                       weight: FontWeight.w500,
+                  //                     ),
+                  //                     const SizedBox(height: 20),
+                  //                     ElevatedButton(
+                  //                       onPressed: () {
+                  //                         Navigator.pop(context);
+                  //                         // Now navigation works here
+                  //                         Navigator.push(
+                  //                           context,
+                  //                           MaterialPageRoute(builder: (_) => LoginScreen()),
+                  //                         );
+                  //                       },
+                  //                       child: const Text("Okay"),
+                  //                     ),
+                  //                   ],
+                  //                 ),
+                  //               ),
+                  //             );
+                  //           },
+                  //         );
+                  //       } else if (provider.errorMessage != null) {
+                  //         ScaffoldMessenger.of(context).showSnackBar(
+                  //           SnackBar(content: Text(provider.errorMessage!)),
+                  //         );
+                  //       }
+                  //     }
+                  //
+                  // ),
+
+
                   PrimaryButton(
-                   // title: 'Submit For Approval',
                     title: provider.isLoading ? "Sending.." : 'Submit For Approval',
+                    onTap: () async {
+                      await provider.registerDriver();
 
-                      onTap: () async {
-                        await provider.registerDriver();
-
-                        if (provider.success) {
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return Dialog(
-                                backgroundColor: ColorResource.buttonBackground,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15),
+                      if (provider.success) {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return Dialog(
+                              backgroundColor: ColorResource.buttonBackground,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              insetPadding: const EdgeInsets.all(30),
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    CustomText(
+                                      'Registration Submitted',
+                                      size: 22,
+                                      weight: FontWeight.w600,
+                                      color: ColorResource.white,
+                                    ),
+                                    const SizedBox(height: 20),
+                                    CustomText(
+                                      "Thank you for registering! Your details are under review.",
+                                      size: 12,
+                                      color: ColorResource.white,
+                                      weight: FontWeight.w500,
+                                    ),
+                                    const SizedBox(height: 20),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(builder: (_) => LoginScreen()),
+                                        );
+                                      },
+                                      child: const Text("Okay"),
+                                    ),
+                                  ],
                                 ),
-                                insetPadding: const EdgeInsets.all(30),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      CustomText(
-                                        'Registration Submitted',
-                                        size: 22,
-                                        weight: FontWeight.w600,
-                                        color: ColorResource.white,
-                                      ),
-                                      const SizedBox(height: 20),
-                                      CustomText(
-                                        "Thank you for registering! Your details are under review.",
-                                        size: 12,
-                                        color: ColorResource.white,
-                                        weight: FontWeight.w500,
-                                      ),
-                                      const SizedBox(height: 20),
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                          // Now navigation works here
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(builder: (_) => LoginScreen()),
-                                          );
-                                        },
-                                        child: const Text("Okay"),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            },
-                          );
-                        } else if (provider.errorMessage != null) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text(provider.errorMessage!)),
-                          );
-                        }
+                              ),
+                            );
+                          },
+                        );
+                      } else if (provider.errorMessage != null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(provider.errorMessage!)),
+                        );
                       }
-
+                    },
                   ),
 
                   const SizedBox(height: 10),

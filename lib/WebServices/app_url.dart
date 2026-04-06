@@ -1,12 +1,12 @@
 class AppUrl {
  //local
   //static const String baseUrl = 'http://35.154.123.59';
- static const String baseUrl = 'http://192.168.1.43:7001';
+ //static const String baseUrl = 'http://192.168.1.43:7273';
 
 
  //live
 
- //static const String baseUrl = 'https://ablagro.in';
+ static const String baseUrl = 'https://ablagro.in';
 
 
   static const String sendOtp = '$baseUrl/api/driver/login';

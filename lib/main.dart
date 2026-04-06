@@ -65,7 +65,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         navigatorKey: navigatorKey,
-        title: 'ABL Driver',
+        title: 'ABL Drivers',
         debugShowCheckedModeBanner: false,
         builder: (context, child) {
           return InternetWrapper(child: child!);

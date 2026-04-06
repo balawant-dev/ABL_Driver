@@ -5,17 +5,27 @@ import '../model/version_model.dart';
 class VersionRepository {
   final _apiService = NetworkApiServices();
 
-  Future<AppVersionModel> getAppVersionApi() async {
+  Future<AppVersionModel> getAppVersionApi(String currentVersion) async {
     try {
-      final response = await _apiService.getApi(AppUrl.appVersion);
-      print('response: $response');
+      final body = {
+        "currentVersion": currentVersion,
+      };
+
+      final response = await _apiService.postApi(
+        body,
+        AppUrl.appVersion,
+      );
+
+      print("Request Body: $body");
+      print("Response: $response");
+
       if (response != null) {
         return AppVersionModel.fromJson(response);
       } else {
         throw Exception('Failed to load data: response is null');
       }
     } catch (e) {
-      print('Error fetching  data: $e');
+      print('Error fetching version data: $e');
       rethrow;
     }
   }
