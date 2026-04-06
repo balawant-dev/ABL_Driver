@@ -11,6 +11,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../widget/customInputBox.dart';
+import 'package:flutter/gestures.dart';
+
+import '../../privacy_policy_screen/privacy_policy_screen.dart';
+import '../../privacy_policy_screen/terms_and_condition_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -99,7 +103,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   Text.rich(
                                     TextSpan(
                                       children: [
-                                        TextSpan(
+                                        const TextSpan(
                                           text: 'By signing up, you agree to our ',
                                           style: TextStyle(
                                             color: Colors.black,
@@ -111,16 +115,25 @@ class _LoginScreenState extends State<LoginScreen> {
                                         ),
                                         TextSpan(
                                           text: 'Terms of \nUse',
-                                          style: TextStyle(
-                                            color: const Color(0xFF086B48),
+                                          style:  TextStyle(
+                                            color: Color(0xFF086B48),
                                             fontSize: 12,
                                             fontFamily: 'Montserrat',
                                             fontWeight: FontWeight.w700,
                                             decoration: TextDecoration.underline,
                                             height: 1.5,
                                           ),
+                                          recognizer: TapGestureRecognizer()
+                                            ..onTap = () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) => const TermsAndConditionScreen(title: "Terms and Condition",),
+                                                ),
+                                              );
+                                            },
                                         ),
-                                        TextSpan(
+                                        const TextSpan(
                                           text: ' and ',
                                           style: TextStyle(
                                             color: Colors.black,
@@ -132,36 +145,32 @@ class _LoginScreenState extends State<LoginScreen> {
                                         ),
                                         TextSpan(
                                           text: 'Privacy Policy',
-                                          style: TextStyle(
-                                            color: const Color(0xFF086B48),
+                                          style: const TextStyle(
+                                            color: Color(0xFF086B48),
                                             fontSize: 12,
                                             fontFamily: 'Montserrat',
                                             fontWeight: FontWeight.w700,
                                             decoration: TextDecoration.underline,
                                             height: 1.5,
                                           ),
+                                          recognizer: TapGestureRecognizer()
+                                            ..onTap = () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) => const PrivacyPolicyScreen(title: "Privacy Policy",),
+                                                ),
+                                              );
+                                            },
                                         ),
                                       ],
                                     ),
+                                    textAlign: TextAlign.center,
                                   ),
                                 ],
                               ),
                               SizedBox(height: 10,),
-                              // PrimaryButton(
-                              //     title: provider.loading?"Sending..": 'Send OTP',
-                              //     onTap: (){
-                              //       if (provider.mobileController.text.isEmpty ||
-                              //           provider.mobileController.text.length != 10) {
-                              //         ScaffoldMessenger.of(context).showSnackBar(
-                              //           SnackBar(
-                              //             content: Text("Enter valid mobile number"),
-                              //           ),
-                              //         );
-                              //         return;
-                              //       }
-                              //       provider.sendOtpProvider(context);
-                              //     }
-                              // ),
+
                               PrimaryButton(
                                 title: provider.loading ? "Sending.." : 'Send OTP',
                                 onTap: () {

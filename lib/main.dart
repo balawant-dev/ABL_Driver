@@ -1,5 +1,6 @@
 
 import 'package:abldriver/presentaion/notification/provider/notificationProvider.dart';
+import 'package:abldriver/presentaion/version_update/provider/version_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -60,6 +61,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => WalletProvider()),
         ChangeNotifierProvider(create: (_) => AccountProvider()),
         ChangeNotifierProvider(create: (_) => NotificationProvider()),
+        ChangeNotifierProvider(create: (_) => AppVersionProvider()),
       ],
       child: MaterialApp(
         navigatorKey: navigatorKey,

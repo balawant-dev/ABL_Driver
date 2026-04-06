@@ -1,12 +1,12 @@
 class AppUrl {
  //local
   //static const String baseUrl = 'http://35.154.123.59';
- //static const String baseUrl = 'http://192.168.1.4:7001';
+ static const String baseUrl = 'http://192.168.1.43:7001';
 
 
  //live
- //static const String baseUrl = 'http://159.89.146.245:7273';
- static const String baseUrl = 'https://ablagro.in';
+
+ //static const String baseUrl = 'https://ablagro.in';
 
 
   static const String sendOtp = '$baseUrl/api/driver/login';
@@ -25,6 +25,7 @@ class AppUrl {
   static const String profileUpdate = '$baseUrl/api/driver/profile';
  static const String notification = '$baseUrl/api/driver/notifications';
  static const String notificationRead = '$baseUrl/api/driver/notifications/read';
+ static const String appVersion = '$baseUrl/api/driver/check-update';
 
 
 }

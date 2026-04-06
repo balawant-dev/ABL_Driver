@@ -22,30 +22,35 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  bool isOn = false;
+
+  @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<ProfileProvider>(context, listen: false).fetchProfileData();
+  
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       final profileProvider =
       Provider.of<ProfileProvider>(context, listen: false);
       final homeProvider =
       Provider.of<HomeProvider>(context, listen: false);
-      homeProvider.fetchHomeHederData();
-      //homeProvider.fetchNewOrderData();
+
+      await profileProvider.fetchProfileData();
+      await homeProvider.fetchHomeHederData();
+
       final status = profileProvider.getProfileData?.data?.status ?? "";
 
       setState(() {
         isOn = status.toLowerCase() == "active";
       });
     });
-
   }
-  bool isOn = false;
+
   int selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Consumer2<ProfileProvider,HomeProvider>(
         builder: (context, provider,homeProvider, child){
+          bool isOn = provider.getProfileData?.data?.status?.toLowerCase() == "active";
          return Scaffold(
            backgroundColor: ColorResource.white,
             body: CustomPageRefresher(
@@ -117,44 +122,91 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ),
                             Spacer(),
+                            // GestureDetector(
+                            //   onTap: () async {
+                            //     final driverId = provider.getProfileData?.data?.sId ?? "";
+                            //    // final statusin=
+                            //     if (driverId.isEmpty) {
+                            //       ScaffoldMessenger.of(context).showSnackBar(
+                            //         const SnackBar(content: Text("Driver ID not found")),
+                            //       );
+                            //       return;
+                            //     }
+                            //     final newStatus = isOn ? "inactive" : "active";
+                            //     await homeProvider.changeDriverStatus(
+                            //       driverId: driverId,
+                            //       status: newStatus,
+                            //     );
+                            //     setState(() {
+                            //       isOn = !isOn;
+                            //     });
+                            //     ScaffoldMessenger.of(context).showSnackBar(
+                            //       SnackBar(
+                            //         content: Text("Driver is now ${newStatus.toUpperCase()}"),
+                            //         duration: const Duration(seconds: 1),
+                            //         behavior: SnackBarBehavior.floating,
+                            //       ),
+                            //     );
+                            //   },
+                            //   child: Container(
+                            //     width: 51,
+                            //     height: 31,
+                            //     padding: const EdgeInsets.all(2),
+                            //     decoration: BoxDecoration(
+                            //       color: isOn ? ColorResource.green : Colors.grey,
+                            //       borderRadius: BorderRadius.circular(20),
+                            //     ),
+                            //     child: Align(
+                            //       alignment: isOn
+                            //           ? Alignment.centerRight
+                            //           : Alignment.centerLeft,
+                            //       child: Container(
+                            //         width: 25,
+                            //         height: 25,
+                            //         decoration: const BoxDecoration(
+                            //           color: Colors.white,
+                            //           shape: BoxShape.circle,
+                            //         ),
+                            //       ),
+                            //     ),
+                            //   ),
+                            // ),
+
                             GestureDetector(
                               onTap: () async {
                                 final driverId = provider.getProfileData?.data?.sId ?? "";
-                               // final statusin=
+
                                 if (driverId.isEmpty) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(content: Text("Driver ID not found")),
                                   );
                                   return;
                                 }
+
                                 final newStatus = isOn ? "inactive" : "active";
+
+                                final homeProvider =
+                                Provider.of<HomeProvider>(context, listen: false);
+
                                 await homeProvider.changeDriverStatus(
                                   driverId: driverId,
                                   status: newStatus,
                                 );
-                                setState(() {
-                                  isOn = !isOn;
-                                });
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text("Driver is now ${newStatus.toUpperCase()}"),
-                                    duration: const Duration(seconds: 1),
-                                    behavior: SnackBarBehavior.floating,
-                                  ),
-                                );
+
+                                // Refresh profile after change
+                                await provider.fetchProfileData();
                               },
                               child: Container(
                                 width: 51,
                                 height: 31,
                                 padding: const EdgeInsets.all(2),
                                 decoration: BoxDecoration(
-                                  color: isOn ? ColorResource.green : Colors.grey,
+                                  color: isOn ? ColorResource.buttonBackground : Colors.grey,
                                   borderRadius: BorderRadius.circular(20),
                                 ),
                                 child: Align(
-                                  alignment: isOn
-                                      ? Alignment.centerRight
-                                      : Alignment.centerLeft,
+                                  alignment:
+                                  isOn ? Alignment.centerRight : Alignment.centerLeft,
                                   child: Container(
                                     width: 25,
                                     height: 25,
