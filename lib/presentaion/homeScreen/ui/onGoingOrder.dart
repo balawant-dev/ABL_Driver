@@ -56,7 +56,7 @@ class _OnGoingOrderState extends State<OnGoingOrder> {
 
     });
   }
-
+  Set<int> expandedIndexes = {};
 
   Future<bool?> showPickupDialog(BuildContext context) async {
     return await showDialog<bool>(
@@ -282,29 +282,48 @@ class _OnGoingOrderState extends State<OnGoingOrder> {
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 12),
                   child: CardData(
+                    //   orerId: order.bookingId ?? "",
+                    //   pickup: order.pickup?.address ??"",
+                    // pickupName: order.pickup?.name ??"",
+                    // pickupNumber: order.pickup?.mobileNo ??"",
+                    //   drop: order.delivery?.address1 ?? "",
+                    // devilerNumber: order.delivery?.mobileNo ?? "",
+                    //   customer: order.delivery?.name ?? "",
+                    // //  distance: order.distance,
+                    //   price: order.totalAmount.toString() ,
+                    //   date: order.createdAt ?? "",
+                    //   PaymentMood: order.paymentMode ?? "",
+                    //   note: order.delivery?.deliveryInsturction ?? "",
+                    // //product
+                    // productName: order.products?.first.name ?? "",
+                    // productPrice: order.products?.first.price.toString() ?? "",
+                    // productQuantity: order.products?.first.quantity.toString() ?? "",
+                    // productFinalPrice: order.products?.first.finalPrice.toString() ?? "",
+                    // status: order.status ?? "",
+                    //   pickuptime: pickupTime ,
+                    //   pickupdate: pickupDate,
+                    //   delivertime: deliverTime ,
+                    //   deliverdate: deliverDate,
+
+                      index: index,
+                      isExpanded: expandedIndexes.contains(index),
                       orerId: order.bookingId ?? "",
-                      pickup: order.pickup?.address ??"",
-                    pickupName: order.pickup?.name ??"",
-                    pickupNumber: order.pickup?.mobileNo ??"",
+                      pickup: order.pickup?.address ?? "",
+                      pickupName: order.pickup?.name ?? "",
+                      pickupNumber: order.pickup?.mobileNo ?? "",
                       drop: order.delivery?.address1 ?? "",
-                    devilerNumber: order.delivery?.mobileNo ?? "",
+                      devilerNumber: order.delivery?.mobileNo ?? "",
                       customer: order.delivery?.name ?? "",
-                    //  distance: order.distance,
-                      price: order.totalAmount.toString() ,
+                      price: order.totalAmount.toString(),
                       date: order.createdAt ?? "",
                       PaymentMood: order.paymentMode ?? "",
                       note: order.delivery?.deliveryInsturction ?? "",
-                    //product
-                    productName: order.products?.first.name ?? "",
-                    productPrice: order.products?.first.price.toString() ?? "",
-                    productQuantity: order.products?.first.quantity.toString() ?? "",
-                    productFinalPrice: order.products?.first.finalPrice.toString() ?? "",
-                    status: order.status ?? "",
-                      pickuptime: pickupTime ,
+                      products: order.products ?? [],
+                      status: order.status ?? "",
+                      pickuptime: pickupTime,
                       pickupdate: pickupDate,
-                      delivertime: deliverTime ,
+                      delivertime: deliverTime,
                       deliverdate: deliverDate,
-
 
                       onTap: () async {
                         final homeProvider =
@@ -371,11 +390,37 @@ class _OnGoingOrderState extends State<OnGoingOrder> {
  // final repo = ContactRepository();
 
   Widget CardData({
+   //  required String orerId,
+   //  required String pickup,
+   //  required String drop,
+   //  required String customer,
+   // // required String distance,
+   //  required String price,
+   //  required String date,
+   //  required String PaymentMood,
+   //  required String pickupName,
+   //  required String note,
+   //  required String pickupNumber,
+   //  required String devilerNumber,
+   //
+   //  //product
+   //  required String productName,
+   //  required String productPrice,
+   //  required String productQuantity,
+   //  required String productFinalPrice,
+   //  required VoidCallback onTap,
+   //  required String status,
+   //  required String pickuptime,
+   //  required String pickupdate,
+   //  required String deliverdate,
+   //  required String delivertime,
+
+    required int index,
+    required bool isExpanded,
     required String orerId,
     required String pickup,
     required String drop,
     required String customer,
-   // required String distance,
     required String price,
     required String date,
     required String PaymentMood,
@@ -383,19 +428,13 @@ class _OnGoingOrderState extends State<OnGoingOrder> {
     required String note,
     required String pickupNumber,
     required String devilerNumber,
-
-    //product
-    required String productName,
-    required String productPrice,
-    required String productQuantity,
-    required String productFinalPrice,
+    required List<dynamic> products,
     required VoidCallback onTap,
     required String status,
     required String pickuptime,
     required String pickupdate,
     required String deliverdate,
     required String delivertime,
-
 
   }){
     return  Container(
@@ -415,18 +454,11 @@ class _OnGoingOrderState extends State<OnGoingOrder> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomText(
-                  //'Order #6598235',
                   orerId,
                   size: 17,
                   color: ColorResource.black,
                   weight: FontWeight.w600,
                 ),
-                // CustomText(
-                //   date,
-                //   size: 15,
-                //   color: ColorResource.black,
-                //   weight: FontWeight.w500,
-                // )
                 CustomText(
                   onlyDate(date),
                   size: 15,
@@ -798,29 +830,41 @@ class _OnGoingOrderState extends State<OnGoingOrder> {
                 : SizedBox.shrink(),
 
             SizedBox(height: 10,),
-            // Center(
-            //   child: Text(
-            //     'Product Details',
-            //     style: TextStyle(
-            //       color: Colors.black,
-            //       fontSize: 16,
-            //       fontFamily: 'Poppins',
-            //       fontWeight: FontWeight.w600,
-            //       decoration: TextDecoration.underline,
-            //       height: 1.50,
+
+            // GestureDetector(
+            //   onTap: () {
+            //     setState(() {
+            //       isExpanded = !isExpanded;
+            //     });
+            //   },
+            //   child: Center(
+            //     child: Text(
+            //       isExpanded ? "Hide" : "Product Details",
+            //       style: TextStyle(
+            //         color: Colors.black,
+            //         fontSize: 16,
+            //         fontFamily: 'Poppins',
+            //         fontWeight: FontWeight.w600,
+            //         decoration: TextDecoration.underline,
+            //         height: 1.5,
+            //       ),
             //     ),
             //   ),
             // ),
             GestureDetector(
               onTap: () {
                 setState(() {
-                  isExpanded = !isExpanded;
+                  if (expandedIndexes.contains(index)) {
+                    expandedIndexes.remove(index);
+                  } else {
+                    expandedIndexes.add(index);
+                  }
                 });
               },
               child: Center(
                 child: Text(
                   isExpanded ? "Hide" : "Product Details",
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.black,
                     fontSize: 16,
                     fontFamily: 'Poppins',
@@ -835,80 +879,108 @@ class _OnGoingOrderState extends State<OnGoingOrder> {
             if (isExpanded)
               Container(
                 width: double.infinity,
-                padding: EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   color: Colors.grey.shade200,
                   borderRadius: BorderRadius.circular(6),
                 ),
-                child: Row(
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        CustomText(
-                          'Product Name:',
-                          size: 13,
-                          weight: FontWeight.w500,
-                          color: ColorResource.black,
-                        ),SizedBox(height: 5,),
-                        CustomText(
-                          'Product Price:',
-                          size: 13,
-                          weight: FontWeight.w500,
-                          color: ColorResource.black,
-                        ),SizedBox(height: 5,),
-                        CustomText(
-                          'Product Quantity:',
-                          size: 13,
-                          weight: FontWeight.w500,
-                          color: ColorResource.black,
-                        ),SizedBox(height: 5,),
-                        CustomText(
-                          'Product Final Price:',
-                          size: 13,
-                          weight: FontWeight.w500,
-                          color: ColorResource.black,
-                        ),
+                child: products.isEmpty
+                    ? Center(
+                  child: CustomText(
+                    "No products found",
+                    size: 13,
+                    weight: FontWeight.w500,
+                    color: ColorResource.black,
+                  ),
+                )
+                    : Column(
+                  children: List.generate(products.length, (productIndex) {
+                    final product = products[productIndex];
 
-                      ],
-                    ),
-                    SizedBox(width: 10,),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          child: CustomText(
-                            productName,
-                            size: 13,
-                            weight: FontWeight.w500,
-                            color: ColorResource.black,
+                    return Container(
+                      margin: EdgeInsets.only(
+                        bottom: productIndex == products.length - 1 ? 0 : 10,
+                      ),
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: Row(
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              CustomText(
+                                'Product Name:',
+                                size: 13,
+                                weight: FontWeight.w500,
+                                color: ColorResource.black,
+                              ),
+                              const SizedBox(height: 5),
+                              CustomText(
+                                'Product Price:',
+                                size: 13,
+                                weight: FontWeight.w500,
+                                color: ColorResource.black,
+                              ),
+                              const SizedBox(height: 5),
+                              CustomText(
+                                'Product Quantity:',
+                                size: 13,
+                                weight: FontWeight.w500,
+                                color: ColorResource.black,
+                              ),
+                              const SizedBox(height: 5),
+                              CustomText(
+                                'Product Final Price:',
+                                size: 13,
+                                weight: FontWeight.w500,
+                                color: ColorResource.black,
+                              ),
+                            ],
                           ),
-                          width: 150,
-                        ),SizedBox(height: 5,),
-                        CustomText(
-                          productPrice,
-                          size: 13,
-                          weight: FontWeight.w500,
-                          color: ColorResource.black,
-                        ),SizedBox(height: 5,),
-                        CustomText(
-                          productQuantity,
-                          size: 13,
-                          weight: FontWeight.w500,
-                          color: ColorResource.black,
-                        ),SizedBox(height: 5,),
-                        CustomText(
-                          productFinalPrice,
-                          size: 13,
-                          weight: FontWeight.w500,
-                          color: ColorResource.black,
-                        ),SizedBox(height: 5,),
-
-                      ],
-                    )
-                  ],
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                CustomText(
+                                  product.name?.toString() ?? "",
+                                  size: 13,
+                                  weight: FontWeight.w500,
+                                  color: ColorResource.black,
+                                ),
+                                const SizedBox(height: 5),
+                                CustomText(
+                                  "₹${product.price?.toString() ?? "0"}",
+                                  size: 13,
+                                  weight: FontWeight.w500,
+                                  color: ColorResource.black,
+                                ),
+                                const SizedBox(height: 5),
+                                CustomText(
+                                  product.quantity?.toString() ?? "0",
+                                  size: 13,
+                                  weight: FontWeight.w500,
+                                  color: ColorResource.black,
+                                ),
+                                const SizedBox(height: 5),
+                                CustomText(
+                                  "₹${product.finalPrice?.toString() ?? "0"}",
+                                  size: 13,
+                                  weight: FontWeight.w500,
+                                  color: ColorResource.black,
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    );
+                  }),
                 ),
               ),
             SizedBox(height: 10,),
@@ -930,6 +1002,4 @@ class _OnGoingOrderState extends State<OnGoingOrder> {
       ),
     );
   }
-
-
 }
