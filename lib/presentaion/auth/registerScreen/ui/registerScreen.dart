@@ -173,19 +173,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     hintText: 'Address',
                     controller: provider.addressController,
                     errorText: provider.addressError,
-                    maxLength: 12,
                   ),
                   const SizedBox(height: 10),
 
-                  // ID Proof Upload
-                  // CustomInputField(
-                  //   hintText: 'ID Proof',
-                  //   controller: provider.IDProofController,
-                  //   readOnly: true,
-                  //   suffixIcon: CustomImageView(
-                  //       imagePath: AppImages.attachment, height: 20, width: 20),
-                  //   onSuffixTap: () => _pickIdProofImage(provider),
-                  // ),
                   const SizedBox(height: 10),
 
                   CustomInputField(
@@ -210,6 +200,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     hintText: 'Vehical Number',
                     controller: provider.vahicalNumberController,
                     errorText: provider.vehicleNumberError,
+                    maxLength: 8,
                   ),
                   const SizedBox(height: 10),
                   CustomInputField(
@@ -333,6 +324,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     hintText: 'DL Number',
                     controller: provider.licenseController,
                     errorText: provider.licenseError,
+                    maxLength: 15,
                   ),
                   const SizedBox(height: 10),
 
@@ -347,67 +339,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                       ),
                     ),
-                  // PrimaryButton(
-                  //  // title: 'Submit For Approval',
-                  //   title: provider.isLoading ? "Sending.." : 'Submit For Approval',
-                  //
-                  //     onTap: () async {
-                  //       await provider.registerDriver();
-                  //
-                  //       if (provider.success) {
-                  //         showDialog(
-                  //           context: context,
-                  //           builder: (context) {
-                  //             return Dialog(
-                  //               backgroundColor: ColorResource.buttonBackground,
-                  //               shape: RoundedRectangleBorder(
-                  //                 borderRadius: BorderRadius.circular(15),
-                  //               ),
-                  //               insetPadding: const EdgeInsets.all(30),
-                  //               child: Padding(
-                  //                 padding: const EdgeInsets.all(10.0),
-                  //                 child: Column(
-                  //                   mainAxisSize: MainAxisSize.min,
-                  //                   children: [
-                  //                     CustomText(
-                  //                       'Registration Submitted',
-                  //                       size: 22,
-                  //                       weight: FontWeight.w600,
-                  //                       color: ColorResource.white,
-                  //                     ),
-                  //                     const SizedBox(height: 20),
-                  //                     CustomText(
-                  //                       "Thank you for registering! Your details are under review.",
-                  //                       size: 12,
-                  //                       color: ColorResource.white,
-                  //                       weight: FontWeight.w500,
-                  //                     ),
-                  //                     const SizedBox(height: 20),
-                  //                     ElevatedButton(
-                  //                       onPressed: () {
-                  //                         Navigator.pop(context);
-                  //                         // Now navigation works here
-                  //                         Navigator.push(
-                  //                           context,
-                  //                           MaterialPageRoute(builder: (_) => LoginScreen()),
-                  //                         );
-                  //                       },
-                  //                       child: const Text("Okay"),
-                  //                     ),
-                  //                   ],
-                  //                 ),
-                  //               ),
-                  //             );
-                  //           },
-                  //         );
-                  //       } else if (provider.errorMessage != null) {
-                  //         ScaffoldMessenger.of(context).showSnackBar(
-                  //           SnackBar(content: Text(provider.errorMessage!)),
-                  //         );
-                  //       }
-                  //     }
-                  //
-                  // ),
+
 
 
                   PrimaryButton(

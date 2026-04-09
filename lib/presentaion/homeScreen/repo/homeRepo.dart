@@ -7,6 +7,7 @@ import '../../../WebServices/network/network_api_services.dart';
 import '../model/homeActiveStatusModel.dart';
 import '../model/homeHederModel.dart';
 import '../model/newOrderModel.dart';
+import '../model/onGoingModel.dart';
 import '../model/orderCompleteModel.dart';
 
 
@@ -44,12 +45,12 @@ class HomeRepository {
     }
   }
 
-  Future<NewOrderModel> OnGoingOrderApi() async {
+  Future<OnGoingModel> OnGoingOrderApi() async {
     try {
       final response = await _apiService.getApiWithToken("${AppUrl.newOrder}?type=ongoing");
       print('response: $response');
       if (response != null) {
-        return NewOrderModel.fromJson(response);
+        return OnGoingModel.fromJson(response);
       } else {
         throw Exception('Failed to load data: response is null');
       }

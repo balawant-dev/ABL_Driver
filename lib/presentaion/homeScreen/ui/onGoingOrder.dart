@@ -225,7 +225,7 @@ class _OnGoingOrderState extends State<OnGoingOrder> {
             return const Center(child: CircularProgressIndicator());
           }
 
-          final orders = provider.getNewOrderData?.orderList ?? [];
+          final orders = provider.onGoingModel?.orderListOnGoing ?? [];
           if (orders.isEmpty) {
             return Center(
               child: ClipRRect(
@@ -878,11 +878,14 @@ class _OnGoingOrderState extends State<OnGoingOrder> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        CustomText(
-                          productName,
-                          size: 13,
-                          weight: FontWeight.w500,
-                          color: ColorResource.black,
+                        SizedBox(
+                          child: CustomText(
+                            productName,
+                            size: 13,
+                            weight: FontWeight.w500,
+                            color: ColorResource.black,
+                          ),
+                          width: 150,
                         ),SizedBox(height: 5,),
                         CustomText(
                           productPrice,

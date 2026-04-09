@@ -174,17 +174,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 _menuItem(
                   "User Profile",
                       () {
-                    // Add your action here, e.g., navigate to the profile screen
-
+                    navPush(context: context, action: EditProfileScreen());
                   },
                 ),
 
-                const SizedBox(height: 10),
-                _menuItem("Report Issue",
-                        (){
-
-                    }
-                ),
+                // const SizedBox(height: 10),
+                // _menuItem("Report Issue",
+                //         (){
+                //
+                //     }
+                // ),
                 const SizedBox(height: 10),
                 // _menuItem("Bank Details"),
                 _menuItem(

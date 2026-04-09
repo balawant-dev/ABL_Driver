@@ -23,8 +23,6 @@ import 'firebase_options.dart';
 import 'internetService/internetService.dart';
 import 'presentaion/splash/splashScreen.dart';
 
-// your providers imports...
-
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
@@ -35,7 +33,6 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  /// Initialize Firebase Service
   await FirebaseService.init();
 
   runApp(const MyApp());

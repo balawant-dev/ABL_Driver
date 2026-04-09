@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../model/homeActiveStatusModel.dart';
 import '../model/homeHederModel.dart';
 import '../model/newOrderModel.dart';
+import '../model/onGoingModel.dart';
 import '../model/orderCompleteModel.dart';
 import '../repo/homeRepo.dart';
 import '../ui/onGoingOrderById.dart';
@@ -39,12 +40,12 @@ class HomeProvider with ChangeNotifier {
     notifyListeners();
   }
 
-
+  OnGoingModel?onGoingModel;
   Future<void> fetchOnGoingOrderData() async {
     loading = true;
     notifyListeners();
     try {
-      getNewOrderData = await _repo.OnGoingOrderApi();
+      onGoingModel = await _repo.OnGoingOrderApi();
     } catch (e) {
       print("ReservedRides API ERROR: $e");
     }

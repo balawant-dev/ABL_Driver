@@ -99,13 +99,13 @@ class ProfileRepository {
     File? profileImage,
     File? vehicleRcFrontImage,
     File? vehicleRcBackImage,
-    File? idProofImage,
+   // File? idProofImage,
 
     /// Old image paths from API
     String? oldProfileImage,
     String? oldRcFrontImage,
     String? oldRcBackImage,
-    String? oldIdProofImage,
+   // String? oldIdProofImage,
   }) async {
     final url = AppUrl.profileUpdate;
 
@@ -131,9 +131,9 @@ class ProfileRepository {
       if (vehicleRcBackImage == null && oldRcBackImage != null) {
         fields["vehicleRcBackImage"] = oldRcBackImage;
       }
-      if (idProofImage == null && oldIdProofImage != null) {
-        fields["idProofImage"] = oldIdProofImage;
-      }
+      // if (idProofImage == null && oldIdProofImage != null) {
+      //   fields["idProofImage"] = oldIdProofImage;
+      // }
 
       final files = <String, File>{};
 
@@ -147,9 +147,9 @@ class ProfileRepository {
       if (vehicleRcBackImage != null) {
         files["vehicleRcBackImage"] = vehicleRcBackImage;
       }
-      if (idProofImage != null) {
-        files["idProofImage"] = idProofImage;
-      }
+      // if (idProofImage != null) {
+      //   files["idProofImage"] = idProofImage;
+      // }
 
       if (kDebugMode) {
         log("📤 Fields => $fields");

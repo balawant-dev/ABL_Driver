@@ -7,6 +7,7 @@ import 'package:abldriver/widget/custom_text.dart';
 import 'package:abldriver/widget/primary_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../widget/customInputBox.dart';
 
@@ -21,6 +22,52 @@ class _SosScreenState extends State<SosScreen> {
   TextEditingController nameController =TextEditingController();
   TextEditingController phoneController =TextEditingController();
   TextEditingController RemarkController =TextEditingController();
+  Future<void> makePhoneCall(String phoneNumber) async {
+    final Uri phoneUri = Uri(scheme: 'tel', path: phoneNumber);
+
+    if (await canLaunchUrl(phoneUri)) {
+      await launchUrl(phoneUri);
+    } else {
+      throw 'Could not launch $phoneUri';
+    }
+  }
+  Future<void> openWhatsApp(BuildContext context, String phoneNumber) async {
+    final Uri whatsappUri = Uri.parse("https://wa.me/$phoneNumber");
+
+    try {
+      if (await canLaunchUrl(whatsappUri)) {
+        await launchUrl(
+          whatsappUri,
+          mode: LaunchMode.externalApplication,
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('WhatsApp not installed or cannot open')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Something went wrong')),
+      );
+    }
+  }
+  Future<void> makePhoneCall1(BuildContext context, String phoneNumber) async {
+    final Uri phoneUri = Uri(scheme: 'tel', path: phoneNumber);
+
+    try {
+      if (await canLaunchUrl(phoneUri)) {
+        await launchUrl(phoneUri);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Unable to open dialer')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Something went wrong')),
+      );
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Consumer<SosProvider>(
@@ -35,13 +82,17 @@ class _SosScreenState extends State<SosScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SosCard(
-                      onTap: (){},
+                      onTap: ()async {
+                        await makePhoneCall('7252867931');
+                      },
                       imagePath: AppImages.callIcon,
                       title: 'Call Now',
                     ),
                     SizedBox(height: 10,),
                     SosCard(
-                      onTap: (){},
+                      onTap: ()async{
+                        await openWhatsApp(context, '7252867931');
+                      },
                       imagePath: AppImages.whatsappIcon,
                       title: 'Whatsapp Now',
                     ),
@@ -113,17 +164,26 @@ class _SosScreenState extends State<SosScreen> {
                         SosCard1(
                           imagePath: AppImages.police,
                           title: 'Police(112)',
+                          onTap: () async {
+                            await makePhoneCall1(context, '112');
+                          },
                         ),
                         SosCard1(
                           imagePath: AppImages.fire,
                           title: 'Fire Brigade(101)',
+                          onTap: () async {
+                            await makePhoneCall1(context, '101');
+                          },
                         ),
                         SosCard1(
                           imagePath: AppImages.ambulance,
                           title: 'Ambulance(102)',
+                          onTap: () async {
+                            await makePhoneCall1(context, '102');
+                          },
                         ),
                       ],
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -175,42 +235,46 @@ class _SosScreenState extends State<SosScreen> {
     );
   }
   Widget SosCard1({
+    required VoidCallback onTap,
     required String imagePath,
     required String title,
 }){
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 10,horizontal: 5),
-      child: Column(
-        children: [
-          CustomImageView(
-              imagePath: imagePath,
-            height: 60,
-            width: 60,
-          ),
-          SizedBox(height: 10,),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
-            width: 100,
-            clipBehavior: Clip.antiAlias,
-            decoration: ShapeDecoration(
-              color: Colors.white,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
-              shadows: [
-                BoxShadow(
-                  color: Color(0x26000000),
-                  blurRadius: 4,
-                  offset: Offset(4, 0),
-                  spreadRadius: 0,
-                )
-              ],
-            ),child: CustomText(
-            title,
-            size: 12,
-            color: ColorResource.buttonBackground,
-            weight: FontWeight.w500,
-          ),
-          )
-        ],
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 10,horizontal: 5),
+        child: Column(
+          children: [
+            CustomImageView(
+                imagePath: imagePath,
+              height: 60,
+              width: 60,
+            ),
+            SizedBox(height: 10,),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+              width: 100,
+              clipBehavior: Clip.antiAlias,
+              decoration: ShapeDecoration(
+                color: Colors.white,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+                shadows: [
+                  BoxShadow(
+                    color: Color(0x26000000),
+                    blurRadius: 4,
+                    offset: Offset(4, 0),
+                    spreadRadius: 0,
+                  )
+                ],
+              ),child: CustomText(
+              title,
+              size: 12,
+              color: ColorResource.buttonBackground,
+              weight: FontWeight.w500,
+            ),
+            )
+          ],
+        ),
       ),
     );
   }

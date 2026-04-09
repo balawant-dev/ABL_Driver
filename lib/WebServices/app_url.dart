@@ -1,7 +1,7 @@
 class AppUrl {
  //local
   //static const String baseUrl = 'http://35.154.123.59';
- //static const String baseUrl = 'http://192.168.1.43:7273';
+ //static const String baseUrl = 'http://43.204.237.225:7273';
 
 
  //live

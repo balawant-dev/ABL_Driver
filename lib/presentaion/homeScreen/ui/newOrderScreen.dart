@@ -18,7 +18,7 @@ class NewOrderScreen extends StatefulWidget {
 class _NewOrderScreenState extends State<NewOrderScreen> {
 
 
-  static const int totalSeconds = 30;
+  static const int totalSeconds = 60;
   int remainingSeconds = totalSeconds;
   Timer? timer;
 
@@ -275,40 +275,40 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
               ],
             ),
             SizedBox(height: 20,),
-            SizedBox(
-              height: 50,
-              width: 50,
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  SizedBox(
-                    height: 50,
-                    width: 50,
-                    child: CircularProgressIndicator(
-                      value: progress,
-                      strokeWidth: 6,
-                      backgroundColor: Colors.grey.shade300,
-                      valueColor: AlwaysStoppedAnimation(progressColor),
-                    ),
-                  ),
-                  Text(
-                    "${remainingSeconds}s",
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 10,),
-            CustomText(
-              'Order will be cancel after ${remainingSeconds}s.',
-              size: 13,
-              weight: FontWeight.w400,
-              color: ColorResource.black,
-            ),
-            SizedBox(height: 15,),
+            // SizedBox(
+            //   height: 50,
+            //   width: 50,
+            //   child: Stack(
+            //     alignment: Alignment.center,
+            //     children: [
+            //       SizedBox(
+            //         height: 50,
+            //         width: 50,
+            //         child: CircularProgressIndicator(
+            //           value: progress,
+            //           strokeWidth: 6,
+            //           backgroundColor: Colors.grey.shade300,
+            //           valueColor: AlwaysStoppedAnimation(progressColor),
+            //         ),
+            //       ),
+            //       Text(
+            //         "${remainingSeconds}s",
+            //         style: const TextStyle(
+            //           fontSize: 16,
+            //           fontWeight: FontWeight.w600,
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
+            // SizedBox(height: 10,),
+            // CustomText(
+            //   'Order will be cancel after ${remainingSeconds}s.',
+            //   size: 13,
+            //   weight: FontWeight.w400,
+            //   color: ColorResource.black,
+            // ),
+            // SizedBox(height: 15,),
             SwipeButton(
               onAccepted: onAccepted,
             ),
