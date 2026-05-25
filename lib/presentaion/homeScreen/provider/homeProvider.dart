@@ -111,6 +111,7 @@ class HomeProvider with ChangeNotifier {
   Future<bool> acceptOrderStatus1({
     required String orderId,
     required String status,
+    required String paymentType,
     required BuildContext context,
     required File deliveryProofImage,
   }) async {
@@ -121,6 +122,7 @@ class HomeProvider with ChangeNotifier {
       final response = await _repo.getAcceptOrderStatusApi1(
         orderId: orderId,
         status: status,
+        paymentType:paymentType,
         deliveryProofImage: deliveryProofImage,
       );
 

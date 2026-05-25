@@ -21,6 +21,7 @@ class AppImages {
   static const String ambulance = "assets/images/ambulance.png";
   static const String imageIconUpload = "assets/images/imageIconUpload.png";
   static const String boxImage = "assets/images/boxImage.png";
+  static const String qrImage = "assets/images/qrImage.jpeg";
 
 }
 

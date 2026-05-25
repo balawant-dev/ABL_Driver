@@ -1,14 +1,9 @@
-
-
 import 'dart:async';
 import 'dart:io';
-
 import 'package:abldriver/app/theme/color_resource.dart';
 import 'package:abldriver/core/constants/app_images.dart';
-import 'package:abldriver/presentaion/homeScreen/ui/onGoingOrderById.dart';
 import 'package:abldriver/widget/customImageView.dart';
 import 'package:abldriver/widget/custom_text.dart';
-import 'package:abldriver/widget/navigator_method.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -16,6 +11,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../widget/primary_button.dart';
 import '../provider/homeProvider.dart';
 import 'package:intl/intl.dart';
+
 class OnGoingOrder extends StatefulWidget {
   const OnGoingOrder({super.key});
 
@@ -26,7 +22,6 @@ class OnGoingOrder extends StatefulWidget {
 class _OnGoingOrderState extends State<OnGoingOrder> {
   bool isExpanded = false;
 
-// Open phone dialer
   Future<void> launchCall(String number) async {
     final Uri uri = Uri(scheme: 'tel', path: number);
     if (await canLaunchUrl(uri)) {
@@ -36,7 +31,6 @@ class _OnGoingOrderState extends State<OnGoingOrder> {
     }
   }
 
-// Open SMS app
   Future<void> launchSMS(String number) async {
     final Uri uri = Uri(scheme: 'sms', path: number);
     if (await canLaunchUrl(uri)) {
@@ -51,9 +45,7 @@ class _OnGoingOrderState extends State<OnGoingOrder> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      // Change this to your ACTUAL fetch method name in the provider
       Provider.of<HomeProvider>(context, listen: false).fetchOnGoingOrderData();
-
     });
   }
   Set<int> expandedIndexes = {};
@@ -183,7 +175,6 @@ class _OnGoingOrderState extends State<OnGoingOrder> {
                         );
                         return;
                       }
-
                       Navigator.pop(context, selectedImage);
                     },
                     child: Row(
@@ -224,7 +215,6 @@ class _OnGoingOrderState extends State<OnGoingOrder> {
           if (provider.loading) {
             return const Center(child: CircularProgressIndicator());
           }
-
           final orders = provider.onGoingModel?.orderListOnGoing ?? [];
           if (orders.isEmpty) {
             return Center(
@@ -247,9 +237,8 @@ class _OnGoingOrderState extends State<OnGoingOrder> {
               itemBuilder: (context, index) {
                 final order = orders[index];
                 DateTime? pickedDateTime;
-
-                // ✅ PICKUP
                 DateTime? pickupDateTime;
+
                 if (order.pickedupAt != null && order.pickedupAt!.isNotEmpty) {
                   pickupDateTime = DateTime.parse(order.pickedupAt!).toLocal();
                 }
@@ -261,8 +250,6 @@ class _OnGoingOrderState extends State<OnGoingOrder> {
                 String pickupDate = pickupDateTime != null
                     ? DateFormat('dd-MM-yy').format(pickupDateTime)
                     : "-";
-
-
 
                 DateTime? deliveryDateTime;
                 if (order.deliveredAt != null && order.deliveredAt!.isNotEmpty) {
@@ -278,33 +265,9 @@ class _OnGoingOrderState extends State<OnGoingOrder> {
                     : "-";
 
 
-
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 12),
                   child: CardData(
-                    //   orerId: order.bookingId ?? "",
-                    //   pickup: order.pickup?.address ??"",
-                    // pickupName: order.pickup?.name ??"",
-                    // pickupNumber: order.pickup?.mobileNo ??"",
-                    //   drop: order.delivery?.address1 ?? "",
-                    // devilerNumber: order.delivery?.mobileNo ?? "",
-                    //   customer: order.delivery?.name ?? "",
-                    // //  distance: order.distance,
-                    //   price: order.totalAmount.toString() ,
-                    //   date: order.createdAt ?? "",
-                    //   PaymentMood: order.paymentMode ?? "",
-                    //   note: order.delivery?.deliveryInsturction ?? "",
-                    // //product
-                    // productName: order.products?.first.name ?? "",
-                    // productPrice: order.products?.first.price.toString() ?? "",
-                    // productQuantity: order.products?.first.quantity.toString() ?? "",
-                    // productFinalPrice: order.products?.first.finalPrice.toString() ?? "",
-                    // status: order.status ?? "",
-                    //   pickuptime: pickupTime ,
-                    //   pickupdate: pickupDate,
-                    //   delivertime: deliverTime ,
-                    //   deliverdate: deliverDate,
-
                       index: index,
                       isExpanded: expandedIndexes.contains(index),
                       orerId: order.bookingId ?? "",
@@ -324,6 +287,181 @@ class _OnGoingOrderState extends State<OnGoingOrder> {
                       pickupdate: pickupDate,
                       delivertime: deliverTime,
                       deliverdate: deliverDate,
+                      // onTap: () async {
+                      //   final homeProvider =
+                      //   Provider.of<HomeProvider>(context, listen: false);
+                      //   if (homeProvider.isLoading) return;
+                      //
+                      //   print("STATUS = ${order.status}");
+                      //   print("PAYMENT MODE = ${order.paymentMode}");
+                      //
+                      //
+                      //   if (order.status == "running") {
+                      //     final bool? confirm = await showPickupDialog(context);
+                      //
+                      //     if (confirm == true) {
+                      //       final success = await homeProvider.acceptOrderStatus(
+                      //         orderId: order.sId ?? "",
+                      //         status: "picked up",
+                      //       );
+                      //     }
+                      //   }
+                      //
+                      //
+                      //   else if (order.status == "picked up") {
+                      //     if ((order.paymentMode ?? "").toLowerCase() == "online") {
+                      //       final File? image = await showDeliveryDialog(context);
+                      //       if (image == null) return;
+                      //       final success = await homeProvider.acceptOrderStatus1(
+                      //         orderId: order.sId ?? "",
+                      //         status: "delivered",
+                      //         deliveryProofImage: image,
+                      //         context: context,
+                      //       );
+                      //
+                      //       if (success) {
+                      //         setState(() {
+                      //           order.status = "delivered";
+                      //         });
+                      //       }
+                      //     }
+                      //
+                      //
+                      //     else {
+                      //       final String? paymentType =
+                      //       await showDialog<String>(
+                      //         context: context,
+                      //         barrierDismissible: false,
+                      //         builder: (context) {
+                      //           return AlertDialog(
+                      //             shape: RoundedRectangleBorder(
+                      //               borderRadius: BorderRadius.circular(15),
+                      //             ),
+                      //             title: const Text(
+                      //               "Select Payment Method",
+                      //               style: TextStyle(
+                      //                 fontWeight: FontWeight.bold,
+                      //               ),
+                      //             ),
+                      //             content: Column(
+                      //               mainAxisSize: MainAxisSize.min,
+                      //               children: [
+                      //                 SizedBox(
+                      //                   width: double.infinity,
+                      //                   child: PrimaryButton(title: 'Cash Received', onTap: (){
+                      //                     Navigator.pop(context, "cash");
+                      //                   })
+                      //                 ),
+                      //
+                      //                 const SizedBox(height: 15),
+                      //                 SizedBox(
+                      //                   width: double.infinity,
+                      //                   child: PrimaryButton(
+                      //                       title: 'Online Payment',
+                      //                       onTap: (){
+                      //                         Navigator.pop(context, "online");
+                      //                       }
+                      //                   )
+                      //                 ),
+                      //               ],
+                      //             ),
+                      //           );
+                      //         },
+                      //       );
+                      //
+                      //       if (paymentType == null) return;
+                      //       if (paymentType == "cash") {
+                      //         final File? image = await showDeliveryDialog(context);
+                      //         if (image == null) return;
+                      //         final success = await homeProvider.acceptOrderStatus1(
+                      //           orderId: order.sId ?? "",
+                      //           status: "delivered",
+                      //           deliveryProofImage: image,
+                      //           context: context,
+                      //         );
+                      //
+                      //         if (success) {
+                      //           setState(() {
+                      //             order.status = "delivered";
+                      //           });
+                      //         }
+                      //       }
+                      //
+                      //       else if (paymentType == "online") {
+                      //         await showDialog(
+                      //           context: context,
+                      //           barrierDismissible: false,
+                      //           builder: (context) {
+                      //             return AlertDialog(
+                      //               shape: RoundedRectangleBorder(
+                      //                 borderRadius: BorderRadius.circular(15),
+                      //               ),
+                      //               title: const Text(
+                      //                 "Scan & Pay",
+                      //                 style: TextStyle(
+                      //                   fontWeight: FontWeight.bold,
+                      //                 ),
+                      //               ),
+                      //               content: Column(
+                      //                 mainAxisSize: MainAxisSize.min,
+                      //                 children: [
+                      //
+                      //
+                      //                   Image.asset(
+                      //                     AppImages.qrImage,
+                      //                     height: 220,
+                      //                     width: 220,
+                      //                     fit: BoxFit.contain,
+                      //                   ),
+                      //
+                      //                   const SizedBox(height: 15),
+                      //
+                      //                   Text(
+                      //                     "Amount : ₹${order.totalAmount}",
+                      //                     style: const TextStyle(
+                      //                       fontSize: 18,
+                      //                       fontWeight: FontWeight.bold,
+                      //                     ),
+                      //                   ),
+                      //
+                      //                   const SizedBox(height: 20),
+                      //
+                      //                   SizedBox(
+                      //                     width: double.infinity,
+                      //                     child: PrimaryButton(
+                      //                         title: 'Payment Received',
+                      //                         onTap:(){
+                      //                           Navigator.pop(context);
+                      //                         }
+                      //                     ),
+                      //                   ),
+                      //                 ],
+                      //               ),
+                      //             );
+                      //           },
+                      //         );
+                      //
+                      //
+                      //         final File? image = await showDeliveryDialog(context);
+                      //
+                      //         if (image == null) return;
+                      //
+                      //         final success = await homeProvider.acceptOrderStatus1(
+                      //           orderId: order.sId ?? "",
+                      //           status: "delivered",
+                      //           deliveryProofImage: image,
+                      //           context: context,
+                      //         );
+                      //
+                      //         if (success) {
+                      //           setState(() {
+                      //             order.status = "delivered";
+                      //           });
+                      //         }
+                      //       }
+                      //     }
+                      //   }
+                      // }
 
                       onTap: () async {
                         final homeProvider =
@@ -332,8 +470,8 @@ class _OnGoingOrderState extends State<OnGoingOrder> {
                         if (homeProvider.isLoading) return;
 
                         print("STATUS = ${order.status}");
+                        print("PAYMENT MODE = ${order.paymentMode}");
 
-                        // 👉 RUNNING → Pickup Dialog
                         if (order.status == "running") {
                           final bool? confirm = await showPickupDialog(context);
 
@@ -342,36 +480,181 @@ class _OnGoingOrderState extends State<OnGoingOrder> {
                               orderId: order.sId ?? "",
                               status: "picked up",
                             );
-
-
                           }
                         }
 
-                        // 👉 ACCEPTED → Delivery Dialog
                         else if (order.status == "picked up") {
-                          final File? image = await showDeliveryDialog(context);
-                          if (image == null) return;
+                          if ((order.paymentMode ?? "").toLowerCase() == "online") {
 
-                          final success = await homeProvider.acceptOrderStatus1(
-                            orderId: order.sId ?? "",
-                            status: "delivered",
-                            deliveryProofImage: image,
-                            context: context,
-                          );
+                            final File? image = await showDeliveryDialog(context);
 
-                          if (success) {
-                            setState(() {
-                              order.status = "delivered";
-                            });
+                            if (image == null) return;
+
+                            final success = await homeProvider.acceptOrderStatus1(
+                              orderId: order.sId ?? "",
+                              status: "delivered",
+                              paymentType: "online orders",
+                              deliveryProofImage: image,
+                              context: context,
+                            );
+
+                            if (success) {
+                              setState(() {
+                                order.status = "delivered";
+                              });
+                            }
+                          }
+
+                          else {
+
+                            final String? paymentType =
+                            await showDialog<String>(
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (context) {
+                                return AlertDialog(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  title: const Text(
+                                    "Select Payment Method",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  content: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+
+                                      /// CASH
+                                      SizedBox(
+                                        width: double.infinity,
+                                        child: PrimaryButton(
+                                          title: 'Cash Received',
+                                          onTap: () {
+                                            Navigator.pop(context, "cash");
+                                          },
+                                        ),
+                                      ),
+
+                                      const SizedBox(height: 15),
+
+                                      /// QR
+                                      SizedBox(
+                                        width: double.infinity,
+                                        child: PrimaryButton(
+                                          title: 'Online Payment',
+                                          onTap: () {
+                                            Navigator.pop(context, "online");
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            );
+
+                            if (paymentType == null) return;
+
+                            /// ================= CASH =================
+                            if (paymentType == "cash") {
+
+                              final File? image = await showDeliveryDialog(context);
+
+                              if (image == null) return;
+
+                              final success = await homeProvider.acceptOrderStatus1(
+                                orderId: order.sId ?? "",
+                                status: "delivered",
+                                paymentType: "cash",
+                                deliveryProofImage: image,
+                                context: context,
+                              );
+
+                              if (success) {
+                                setState(() {
+                                  order.status = "delivered";
+                                });
+                              }
+                            }
+
+                            /// ================= QR PAYMENT =================
+                            else if (paymentType == "online") {
+
+                              await showDialog(
+                                context: context,
+                                barrierDismissible: false,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    title: const Text(
+                                      "Scan & Pay",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    content: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+
+                                        Image.asset(
+                                          AppImages.qrImage,
+                                          height: 220,
+                                          width: 220,
+                                          fit: BoxFit.contain,
+                                        ),
+
+                                        const SizedBox(height: 15),
+
+                                        Text(
+                                          "Amount : ₹${order.totalAmount}",
+                                          style: const TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+
+                                        const SizedBox(height: 20),
+
+                                        SizedBox(
+                                          width: double.infinity,
+                                          child: PrimaryButton(
+                                            title: 'Payment Received',
+                                            onTap: () {
+                                              Navigator.pop(context);
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              );
+
+                              final File? image = await showDeliveryDialog(context);
+
+                              if (image == null) return;
+
+                              final success = await homeProvider.acceptOrderStatus1(
+                                orderId: order.sId ?? "",
+                                status: "delivered",
+                                paymentType: "qr",
+                                deliveryProofImage: image,
+                                context: context,
+                              );
+
+                              if (success) {
+                                setState(() {
+                                  order.status = "delivered";
+                                });
+                              }
+                            }
                           }
                         }
                       }
-
-
-
-
-
-
                   ),
                 );
               },
@@ -387,34 +670,7 @@ class _OnGoingOrderState extends State<OnGoingOrder> {
         "${parsedDate.year}";
   }
 
- // final repo = ContactRepository();
-
   Widget CardData({
-   //  required String orerId,
-   //  required String pickup,
-   //  required String drop,
-   //  required String customer,
-   // // required String distance,
-   //  required String price,
-   //  required String date,
-   //  required String PaymentMood,
-   //  required String pickupName,
-   //  required String note,
-   //  required String pickupNumber,
-   //  required String devilerNumber,
-   //
-   //  //product
-   //  required String productName,
-   //  required String productPrice,
-   //  required String productQuantity,
-   //  required String productFinalPrice,
-   //  required VoidCallback onTap,
-   //  required String status,
-   //  required String pickuptime,
-   //  required String pickupdate,
-   //  required String deliverdate,
-   //  required String delivertime,
-
     required int index,
     required bool isExpanded,
     required String orerId,
@@ -438,7 +694,6 @@ class _OnGoingOrderState extends State<OnGoingOrder> {
 
   }){
     return  Container(
-      //height: 20,
       clipBehavior: Clip.antiAlias,
       decoration: ShapeDecoration(
         color: ColorResource.cardColor,
@@ -552,7 +807,6 @@ class _OnGoingOrderState extends State<OnGoingOrder> {
                               ),
                               SizedBox(height: 5,),
                               CustomText(
-                               // '10:00 AM',
                                 pickuptime,
                                 size: 11,
                                 weight: FontWeight.w400,
@@ -561,7 +815,6 @@ class _OnGoingOrderState extends State<OnGoingOrder> {
                               SizedBox(height: 5,),
                               CustomText(
                                 pickupdate,
-                                //'09-12-24',
                                 size: 11,
                                 weight: FontWeight.w400,
                                 color: ColorResource.black,
@@ -622,22 +875,6 @@ class _OnGoingOrderState extends State<OnGoingOrder> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                // Text(
-                                //   drop,
-                                //   textAlign: TextAlign.justify,
-                                //   style: TextStyle(
-                                //     fontSize: 13,
-                                //     fontWeight: FontWeight.w400,
-                                //     color: ColorResource.black,
-                                //   ),
-                                //   maxLines: 2,
-                                //   overflow: TextOverflow.ellipsis,
-                                //   strutStyle: StrutStyle(
-                                //     fontSize: 13,
-                                //     height: 1.5, // controls line height
-                                //     forceStrutHeight: true,
-                                //   ),
-                                // ),
                                 SizedBox(
                                   height: 40,
                                   child: Text(
@@ -682,7 +919,7 @@ class _OnGoingOrderState extends State<OnGoingOrder> {
                       SizedBox(height: 45,),
                       GestureDetector(
                         onTap: () {
-                          launchSMS(pickupNumber); // sms to deliver number
+                          launchSMS(pickupNumber);
                           print(pickupNumber);
                         },
                         child: CustomImageView(
@@ -694,7 +931,7 @@ class _OnGoingOrderState extends State<OnGoingOrder> {
                       SizedBox(height: 10,),
                       GestureDetector(
                         onTap: () {
-                          launchCall(pickupNumber); // call pickup number
+                          launchCall(pickupNumber);
                           print(pickupNumber);
                         },
                         child: CustomImageView(
@@ -705,7 +942,7 @@ class _OnGoingOrderState extends State<OnGoingOrder> {
                       ),SizedBox(height: 10,),
                       GestureDetector(
                         onTap: () {
-                          launchSMS(devilerNumber); // sms to deliver number
+                          launchSMS(devilerNumber);
                           print(devilerNumber);
                         },
                         child: CustomImageView(
@@ -716,7 +953,7 @@ class _OnGoingOrderState extends State<OnGoingOrder> {
                       ),SizedBox(height: 10,),
                       GestureDetector(
                         onTap: () {
-                          launchCall(devilerNumber); // call deliver number
+                          launchCall(devilerNumber);
                           print(devilerNumber);
                         },
                         child: CustomImageView(
@@ -750,7 +987,6 @@ class _OnGoingOrderState extends State<OnGoingOrder> {
                 ),
 
                 CustomText(
-                  //'Kapil Gupta',
                   customer,
                   size: 13,
                   weight: FontWeight.w600,
@@ -831,26 +1067,6 @@ class _OnGoingOrderState extends State<OnGoingOrder> {
 
             SizedBox(height: 10,),
 
-            // GestureDetector(
-            //   onTap: () {
-            //     setState(() {
-            //       isExpanded = !isExpanded;
-            //     });
-            //   },
-            //   child: Center(
-            //     child: Text(
-            //       isExpanded ? "Hide" : "Product Details",
-            //       style: TextStyle(
-            //         color: Colors.black,
-            //         fontSize: 16,
-            //         fontFamily: 'Poppins',
-            //         fontWeight: FontWeight.w600,
-            //         decoration: TextDecoration.underline,
-            //         height: 1.5,
-            //       ),
-            //     ),
-            //   ),
-            // ),
             GestureDetector(
               onTap: () {
                 setState(() {

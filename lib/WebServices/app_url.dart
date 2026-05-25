@@ -6,7 +6,8 @@ class AppUrl {
 
  //live
 
- static const String baseUrl = 'https://ablagro.in';
+ //static const String baseUrl = 'https://ablagro.in';
+ static const String baseUrl = 'http://167.71.226.189:7273';
 
 
   static const String sendOtp = '$baseUrl/api/driver/login';

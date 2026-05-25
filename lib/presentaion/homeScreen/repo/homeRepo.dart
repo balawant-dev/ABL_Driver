@@ -96,6 +96,7 @@ class HomeRepository {
   Future<OrderCompleteModel> getAcceptOrderStatusApi1({
     required String orderId,
     required String status,
+    required String paymentType,
     required File deliveryProofImage,
   }) async {
 
@@ -103,6 +104,7 @@ class HomeRepository {
       url: "${AppUrl.acceptStatus}/$orderId",
       fields: {
         "status": status,
+        "paymentType":paymentType,
       },
       imageFile: deliveryProofImage,
       fileFieldName: "deliveryProofImage",
