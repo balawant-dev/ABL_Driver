@@ -91,7 +91,6 @@ class _OnGoingOrderState extends State<OnGoingOrder> {
 
   Future<File?> showDeliveryDialog(BuildContext context) async {
     File? selectedImage;
-
     return await showDialog<File>(
       context: context,
       barrierDismissible: false,
@@ -485,11 +484,8 @@ class _OnGoingOrderState extends State<OnGoingOrder> {
 
                         else if (order.status == "picked up") {
                           if ((order.paymentMode ?? "").toLowerCase() == "online") {
-
                             final File? image = await showDeliveryDialog(context);
-
                             if (image == null) return;
-
                             final success = await homeProvider.acceptOrderStatus1(
                               orderId: order.sId ?? "",
                               status: "delivered",
@@ -526,7 +522,6 @@ class _OnGoingOrderState extends State<OnGoingOrder> {
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
 
-                                      /// CASH
                                       SizedBox(
                                         width: double.infinity,
                                         child: PrimaryButton(
@@ -539,7 +534,6 @@ class _OnGoingOrderState extends State<OnGoingOrder> {
 
                                       const SizedBox(height: 15),
 
-                                      /// QR
                                       SizedBox(
                                         width: double.infinity,
                                         child: PrimaryButton(
@@ -557,7 +551,6 @@ class _OnGoingOrderState extends State<OnGoingOrder> {
 
                             if (paymentType == null) return;
 
-                            /// ================= CASH =================
                             if (paymentType == "cash") {
 
                               final File? image = await showDeliveryDialog(context);
@@ -579,7 +572,6 @@ class _OnGoingOrderState extends State<OnGoingOrder> {
                               }
                             }
 
-                            /// ================= QR PAYMENT =================
                             else if (paymentType == "online") {
 
                               await showDialog(
